@@ -11,6 +11,33 @@ import { upload } from '../../utils/sendImageToCloudinary';
 
 const router = express.Router();
 
+
+// user profile get 
+router.get(
+  '/profile',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  UserController.userProfile,
+);
+
+
+// user profile update 
+router.put(
+  '/profile',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  validateRequest(UserValidations.updateUserValidationSchema),
+  UserController.updateUser,
+);
+
+// user follow
+router.post(
+  '/follow',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  validateRequest(UserValidations.userFollowValidationSchema),
+  UserController.userFollow,
+);
+
+
+
 router.post(
   '/create-student',
   auth(USER_ROLE.admin),

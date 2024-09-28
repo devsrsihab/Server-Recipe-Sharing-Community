@@ -22,6 +22,13 @@ const updateUserValidationSchema = z.object({
   body: UserSchemaValidation.partial(),
 });
 
+// user follow validation
+const userFollowValidationSchema = z.object({
+  body: z.object({
+    id: z.string().nonempty({ message: "User ID is required" }),
+  }),
+});
+
 // change status validation
 const changeStatusValidationSchema = z.object({
   body: z.object({
@@ -29,4 +36,4 @@ const changeStatusValidationSchema = z.object({
   }),
 });
 
-export const UserValidations = { updateUserValidationSchema, UserSchemaValidation, changeStatusValidationSchema };
+export const UserValidations = { userFollowValidationSchema, updateUserValidationSchema, UserSchemaValidation, changeStatusValidationSchema };

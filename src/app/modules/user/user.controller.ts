@@ -39,6 +39,46 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+// get user profile
+const userProfile = catchAsync(async (req, res) => {
+  const { email, role } = req.user;
+
+  const result = await UserServices.getUserProfileFromDB(email, role);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User profile retived successfully',
+    data: result,
+  });
+});
+
+// get user profile
+const updateUser = catchAsync(async (req, res) => {
+  const { email } = req.user;
+
+  const result = await UserServices.updateUserToDB(email, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User profile updated successfully',
+    data: result,
+  });
+});
+
+// user follow
+const userFollow = catchAsync(async (req, res) => {
+  const { email } = req.user;
+
+  const result = await UserServices.userFollowToDB(email, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User follow successfully',
+    data: result,
+  }); 
+});
+
+
 // get me controller
 const getMe = catchAsync(async (req, res) => {
   const { userId, role } = req.user;
@@ -71,4 +111,7 @@ export const UserController = {
   createAdmin,
   getMe,
   changeStatus,
+  userProfile,
+  updateUser,
+  userFollow
 };
