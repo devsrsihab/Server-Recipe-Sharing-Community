@@ -1,15 +1,25 @@
 import { z } from 'zod';
 import { USER_STATUS } from './user.constant';
 
-// studentSchema validation
+
+// name validation
+const nameValidation = z.object({
+  firstName: z.string().nonempty({ message: "First name is required" }),
+  lastName: z.string().nonempty({ message: "Last name is required" }),
+});
+
+//user validation
 const UserSchemaValidation = z.object({
-  password: z
-    .string({
-      invalid_type_error: 'Password must be a string',
-    })
-    .max(20, 'Password should be 20 Character')
-    .min(8, 'Password should be 8 Character')
-    .optional(),
+  body: z.object({
+    email: z.string().email({ message: "Invalid email address" }).trim(),
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }).trim(),
+    name: nameValidation,
+  }),
+});
+
+// update user validation
+const updateUserValidationSchema = z.object({
+  body: UserSchemaValidation.partial(),
 });
 
 // change status validation
@@ -19,4 +29,4 @@ const changeStatusValidationSchema = z.object({
   }),
 });
 
-export const UserValidations = { UserSchemaValidation, changeStatusValidationSchema };
+export const UserValidations = { updateUserValidationSchema, UserSchemaValidation, changeStatusValidationSchema };

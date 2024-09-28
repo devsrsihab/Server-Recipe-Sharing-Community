@@ -1,8 +1,15 @@
 import { Schema, model } from 'mongoose';
-import { TUser, UserModel } from './user.interface';
+import { IName, TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 import { USER_STATUS } from './user.constant';
+
+// name schema
+const nameSchema = new Schema<IName>({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+});
+
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -16,45 +23,72 @@ const userSchema = new Schema<TUser, UserModel>(
       required: true,
       unique: true,
     },
+    name: {
+      type: nameSchema,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
-      select: 0,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    profilePicture: {
+      type: String,
+      required: false, 
+    },
+    bio: {
+      type: String,
+      default: "",  // Optional with default value
+    },
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      }
+    ],
+    following: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      }
+    ],
+    isPremium: {
+      type: Boolean,
+      default: false,  // Default to non-premium
+    },
+    premiumExpiry: {
+      type: Date,
     },
     needPasswordChange: {
       type: Boolean,
-      required: true,
-      default: true,
+      default: true, 
     },
     passwordChangedAt: {
       type: Date,
     },
     role: {
       type: String,
-      enum: {
-        values: ['super-admin','admin', 'student', 'faculty'],
-        message: "{VALUE} is not valid. Allowed values are 'admin', 'student', or 'teacher'",
-      },
-      required: true,
+      enum: ['admin', 'user'],  
     },
     status: {
       type: String,
-      enum: {
-        values: USER_STATUS,
-        message: "{VALUE} is not valid. Allowed values are 'in-progress' or 'blocked'",
-      },
-      default: 'in-progress',
+      enum: USER_STATUS,
+      default: 'active',  // Default to 'pending' status after registration
       required: true,
     },
     isDeleted: {
       type: Boolean,
-      default: false,
+      default: false, 
     },
   },
   {
-    timestamps: true,
-  },
+    timestamps: true, 
+  }
 );
+
 
 // pre middleware / hook: we will work ot it create() save()
 userSchema.pre('save', async function (next) {
@@ -65,6 +99,8 @@ userSchema.pre('save', async function (next) {
   // next step
   next();
 });
+
+
 // post middleware / hook: we will work ot it create() save()
 userSchema.post('save', function (doc, next) {
   doc.password = '';
@@ -72,9 +108,11 @@ userSchema.post('save', function (doc, next) {
 });
 
 // user exist cusotm static method
-userSchema.statics.isUserExistByCustomId = async function (id: string) {
-  return await User.findOne({ id }).select('+password');
+userSchema.statics.isUserExistByEmail = async function (email: string) {
+  return await User.findOne({ email }).select('+password');
 };
+
+
 // user exist cusotm static method
 userSchema.statics.isPasswordMatch = async function (
   plainTextPassword: string,
@@ -82,6 +120,8 @@ userSchema.statics.isPasswordMatch = async function (
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
+
+
 // check is the jwt token issued before password changed
 userSchema.statics.isJWTIssuedBeforePasswordChanged = async function (
   passwordChangedTimeStamp: Date,

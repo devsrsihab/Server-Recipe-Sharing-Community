@@ -42,7 +42,7 @@ router.post(
 // get me
 router.get(
   '/me',
-  auth(USER_ROLE.admin, USER_ROLE.student, USER_ROLE.faculty),
+  auth(USER_ROLE.admin, USER_ROLE.user),
   UserController.getMe,
 );
 

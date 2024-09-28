@@ -26,7 +26,7 @@ const createStudentToDB = async (file: any, password: string, payload: TStudent)
   userData.password = password || (config.user_default_password as string);
 
   // set user role
-  userData.role = 'student';
+  userData.role = 'user';
   // create student email
   userData.email = payload.email;
 
@@ -88,7 +88,7 @@ const createFacultyToDB = async (password: string, payload: TFaculty) => {
   // if the password empty
   userData.password = password || (config.user_default_password as string);
   // set user role
-  userData.role = 'faculty';
+  userData.role = 'user';
   // create faculty email
   userData.email = payload.email;
   // academic semester

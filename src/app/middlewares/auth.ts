@@ -35,8 +35,8 @@ const auth = (...requiredUserRole: TUserRole[]) => {
     }
 
     // user role checking
-    const { role, userId, iat } = decoded as JwtPayload;
-    const user = await User.isUserExistByCustomId(userId);
+    const { role, email, iat } = decoded as JwtPayload;
+    const user = await User.isUserExistByEmail(email);
     const isDeleted = user?.isDeleted;
     const isUserBlocked = user?.status === 'blocked';
 

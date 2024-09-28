@@ -5,10 +5,26 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 import config from '../../config';
 
-// create
+
+
+// register 
+const registerUser = catchAsync(async (req, res) => {
+  console.log(req.body);
+  const result = await AuthServices.registerUserToDB(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Register  successfully',
+    data: result,
+  });
+});
+
+
+// login
 const loginUser = catchAsync(async (req, res) => {
   const result: any = await AuthServices.loginUser(req.body);
-  const { refreshToken, accessToken, neetPassWord } = result;
+  const { refreshToken, accessToken, needPassWord } = result;
 
   // save refresh token in cookie
   res.cookie('refreshToken', refreshToken, {
@@ -22,13 +38,14 @@ const loginUser = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'login successfully',
-    data: { accessToken, neetPassWord },
+    data: { accessToken, needPassWord },
   });
 });
 
 // change password
 const changePassword = catchAsync(async (req, res) => {
   const user = req?.user;
+  // console.log(user?.user);
   const { ...passwordData } = req.body;
   const result = await AuthServices.changePassword(user, passwordData);
 
@@ -56,8 +73,8 @@ const refreshToken = catchAsync(async (req, res) => {
 
 // forget password
 const forgetPassword = catchAsync(async (req, res) => {
-  const { id } = req.body;
-  const result = await AuthServices.forgetPassword(id);
+  const { email } = req.body;
+  const result = await AuthServices.forgetPassword(email);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -84,4 +101,5 @@ export const AuthControllers = {
   refreshToken,
   forgetPassword,
   resetPassword,
+  registerUser
 };

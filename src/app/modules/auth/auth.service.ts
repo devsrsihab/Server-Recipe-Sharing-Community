@@ -8,10 +8,28 @@ import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
 import jwt from 'jsonwebtoken';
 import { sendMail } from '../../utils/sendEmail';
+import { TUser } from '../user/user.interface';
+import {  generateUsername, generatUserId } from '../user/user.utils';
+
+
+
+// create student
+const registerUserToDB = async (payload: TUser) => {
+  
+  // generate username
+  payload.username = await generateUsername(payload.name);
+  // generate a unique id
+  payload.id = await generatUserId() || '';
+  // set user role user
+  payload.role = 'user';
+  const user = await User.create(payload);
+  return user;
+};
+
 
 // create
 const loginUser = async (payload: TLoginUser) => {
-  const user = await User.isUserExistByCustomId(payload.id);
+  const user = await User.isUserExistByEmail(payload.email);
   const isDeleted = user?.isDeleted;
   const isUserBlocked = user?.status === 'blocked';
 
@@ -39,7 +57,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   // jwt token
   const jwtPayload = {
-    userId: user?.id,
+    email: user?.email,
     role: user?.role,
   };
 
@@ -57,7 +75,7 @@ const loginUser = async (payload: TLoginUser) => {
   return {
     accessToken,
     refreshToken,
-    neetPassWord: user.needPasswordChange,
+    needPassWord: user.needPasswordChange,
   };
 };
 
@@ -66,7 +84,8 @@ const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
 ) => {
-  const user = await User.isUserExistByCustomId(userData.userId);
+
+  const user = await User.isUserExistByEmail(userData.email);
   const isDeleted = user?.isDeleted;
   const isUserBlocked = user?.status === 'blocked';
 
@@ -97,9 +116,10 @@ const changePassword = async (
     payload.newPassword,
     Number(config.bcrypt_salt_rounds),
   );
+  console.log(userData);
 
   const result = User.findOneAndUpdate(
-    { id: userData.userId, role: userData.role },
+    { email: userData.email, role: userData.role },
     {
       password: newHashedPassword,
       needPasswordChange: false,
@@ -124,7 +144,7 @@ const refreshToken = async (token: string) => {
 
   // user role checking
   const { userId, iat } = decoded as JwtPayload;
-  const user = await User.isUserExistByCustomId(userId);
+  const user = await User.isUserExistByEmail(userId);
   const isDeleted = user?.isDeleted;
   const isUserBlocked = user?.status === 'blocked';
 
@@ -153,7 +173,7 @@ const refreshToken = async (token: string) => {
 
   // jwt token
   const jwtPayload = {
-    userId: user?.id,
+    email: user?.email,
     role: user?.role,
   };
 
@@ -169,10 +189,10 @@ const refreshToken = async (token: string) => {
 };
 
 // forget password
-const forgetPassword = async (id: string) => {
+const forgetPassword = async (email: string) => {
 
     // user  existence checking
-    const user = await User.isUserExistByCustomId(id);
+    const user = await User.isUserExistByEmail(email);
     const isDeleted = user?.isDeleted;
     const isUserBlocked = user?.status === 'blocked';
 
@@ -193,7 +213,7 @@ const forgetPassword = async (id: string) => {
 
     // jwt token
     const jwtPayload = {
-      userId: user?.id,
+      email: user?.email,
       role: user?.role,
     };
 
@@ -205,16 +225,16 @@ const forgetPassword = async (id: string) => {
 
 
     // reset ui link 
-    const resetUILink = `${config.reset_password_ui_link}/?id=${user.id}&token=${accessToken}`;
+    const resetUILink = `${config.reset_password_ui_link}/?id=${user.email}&token=${accessToken}`;
 
     sendMail(user.email, resetUILink);
 
 };
 
 // reset password
-const resetPassword = async (payload: { id: string; newPassword: string }, token: string) => {
+const resetPassword = async (payload: { email: string; newPassword: string }, token: string) => {
   // check user existence
-  const user = await User.isUserExistByCustomId(payload.id);
+  const user = await User.isUserExistByEmail(payload.email);
   const isDeleted = user?.isDeleted;
   const isUserBlocked = user?.status === 'blocked';
 
@@ -263,5 +283,6 @@ export const AuthServices = {
   changePassword,
   refreshToken,
   forgetPassword,
-  resetPassword
+  resetPassword, 
+  registerUserToDB
 };

@@ -2,19 +2,33 @@
 import { Model } from 'mongoose';
 import { USER_ROLE } from './user.constant';
 
+export interface IName {
+  firstName: string;
+  lastName: string;
+}
+
 export interface TUser {
   id: string;
+  name: IName;
   email: string;
   password: string;
-  role: 'super-admin' | 'admin' | 'student' | 'faculty';
+  username: string;   
+  profilePicture?: string;      
+  bio?: string;                 
+  followers: string[];        
+  following: string[]; 
+  isPremium: boolean;           
+  premiumExpiry?: Date; 
   needPasswordChange: boolean;
   passwordChangedAt?: Date;
-  status: 'in-progress' | 'blocked';
+  status: string;
+  role: 'admin' | 'user' ;
   isDeleted: boolean;
 }
 
+
 export interface UserModel extends Model<TUser> {
-  isUserExistByCustomId(id: string): Promise<TUser>;
+  isUserExistByEmail(id: string): Promise<TUser>;
   isPasswordMatch(plainTextPassword: string, hashedPassword: string): Promise<boolean>;
   isJWTIssuedBeforePasswordChanged(
     passwordChangedTimeStamp: Date,
