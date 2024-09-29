@@ -49,7 +49,17 @@ const getSingleRecipeFromDB = async (id: string) => {
 };
 
 // update recipe
-const updateRecipeToDB = async (id: string, payload: Partial<IRecipe>) => {
+const updateRecipeToDB = async (userData: JwtPayload, id: string, payload: Partial<IRecipe>) => {
+
+    // if user role is user then delete only his recipe
+  const user = await User.findOne({email: userData.email}).select('_id, email');
+  const isRecipeOwner = await Recipe.findOne({_id: id, createdBy: user?._id});
+  
+    // if role user but not owner of the recipe
+  if(userData?.role === 'user' && !isRecipeOwner){
+    throw new AppError(httpStatus.FORBIDDEN, 'This is Not Your Recipe, You are not allowed to update this recipe');
+  }
+
 
   const result = await Recipe.findByIdAndUpdate( id , payload, {
     new: true,
@@ -59,47 +69,33 @@ const updateRecipeToDB = async (id: string, payload: Partial<IRecipe>) => {
 };
 
 // delete recipe
-// const deleteStudentFromDB = async (id: string) => {
-//   const session = await mongoose.startSession();
+const deleteRecipeFromDB = async (userData: JwtPayload, id: string) => {
 
-//   try {
-//     // transaction
-//     session.startTransaction();
+  // if user role is user then delete only his recipe
+  const user = await User.findOne({email: userData.email}).select('_id, email');
+  const isRecipeOwner = await Recipe.findOne({_id: id, createdBy: user?._id});
 
-//     const deletedStudent = await Student.findOneAndUpdate(
-//       { id },
-//       { isDeleted: true },
-//       { new: true, session },
-//     );
+    // if role user but not owner of the recipe
+  if(userData?.role === 'user' && !isRecipeOwner){
+    throw new AppError(httpStatus.FORBIDDEN, 'You are not allowed to delete this recipe');
+  }
 
-//     if (!deletedStudent) {
-//       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student');
-//     }
 
-//     // deleted user
-//     const deletedUser = await User.findOneAndUpdate(
-//       { id },
-//       { isDeleted: true },
-//       { new: true, session },
-//     );
+  const baseModel = userData?.role === 'user' ? 
+  Recipe.findByIdAndUpdate({_id: id, createdBy: user?._id}, {isDeleted: true}, {new: true}) :
+  Recipe.findByIdAndUpdate(id, {isDeleted: true}, {new: true});
 
-//     if (!deletedUser) {
-//       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete User');
-//     }
 
-//     await session.commitTransaction();
-//     await session.endSession();
-//     return deletedStudent;
-//   } catch (error) {
-//     await session.abortTransaction();
-//     await session.endSession();
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student');
-//   }
-// };
+
+
+  const result = await baseModel;
+  return result;
+};
 
 export const RecipeServices = {
   getAllRecipesFromDB,
   createRecipe,
   getSingleRecipeFromDB,
-  updateRecipeToDB
+  updateRecipeToDB,
+  deleteRecipeFromDB
 };

@@ -60,6 +60,9 @@ const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
+
+
+  
   // dynamic loop for guardian
   if (guardian && Object.keys(guardian).length) {
     for (const [key, value] of Object.entries(guardian)) {

@@ -9,7 +9,8 @@ router.post('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.createR
 router.get('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getAllRecipes);
 router.get('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getSingleRecipe);
 router.put('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.updateRecipe);
-
+router.delete('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.deleteRecipe);
+    
 
 
 export const RecipeRoute = router;
