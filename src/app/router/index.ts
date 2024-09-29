@@ -11,6 +11,7 @@ import { SemesterRegistraitonRoute } from '../modules/semesterRegistration/semes
 import { OfferedCourseRoute } from '../modules/offeredCourse/offeredCourse.route';
 import { AuthRoute } from '../modules/auth/auth.route';
 import { EnrolledCourseRoute } from '../modules/enrolledCourse/enrolledCourse.route';
+import { RecipeRoute } from '../modules/recipe/recipe.route';
 
 const router = Router();
 
@@ -64,6 +65,10 @@ const moduleRoutes = [
     path: '/enrolled-course',
     route: EnrolledCourseRoute,
   },
+  {
+    path: '/recipes',
+    route: RecipeRoute,
+  }
 ];
 
 // travers the all route
