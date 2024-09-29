@@ -44,6 +44,22 @@ router.patch(
   UserController.userUnfollow,
 );
 
+// get user followers
+router.get(
+  '/followers',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  UserController.getUserFollowers,
+);
+
+// get user following 
+router.get(
+  '/following',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  UserController.getUserFollowing,
+);
+
+
+
 
 
 router.post(

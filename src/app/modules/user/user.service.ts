@@ -248,9 +248,8 @@ const updateUserToDB = async (email: string, payload: Partial<TUser>) => {
 
 // user follow with following which user follow
 const userFollowToDB = async (email: string, payload: { id: string }) => {
-  // Start session
   const session = await mongoose.startSession();
-  
+
   try {
     session.startTransaction();
 
@@ -258,39 +257,37 @@ const userFollowToDB = async (email: string, payload: { id: string }) => {
     const user = await User.findOne({ email }).session(session);
     const followingUser = await User.findById(payload.id).session(session);
 
-    // Check if the following user exists
-    if (!followingUser) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    if (!user || !followingUser) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User or target user not found');
     }
 
-    // Prevent the user from following themselves
-    if (user?._id.toString() === followingUser._id.toString()) {
+    if (user._id.toString() === followingUser._id.toString()) {
       throw new AppError(httpStatus.BAD_REQUEST, 'You cannot follow yourself');
     }
 
-    // Check if the user is already following the target user
-    if (user?.following.includes(followingUser?._id.toString())) {
+    if (user.following.includes(followingUser._id.toString())) {
       throw new AppError(httpStatus.BAD_REQUEST, 'User already followed');
     }
 
-    // Update the following user’s followers array
-    if (user?._id) {
-        followingUser.followers.push(user._id.toString());
-        await followingUser.save({ session });
-    }
+    // Update the following array of the current user
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $addToSet: { following: followingUser._id.toString() } },
+      { session }
+    );
 
-    // Update the user's following array
-    if (user?._id) {
-      user.following.push(followingUser?._id.toString());
-      await user.save({ session });
-    }
+    // Update the followers array of the target user
+    await User.findOneAndUpdate(
+      { _id: followingUser._id },
+      { $addToSet: { followers: user._id.toString() } },
+      { session }
+    );
 
     await session.commitTransaction();
-    return followingUser
-
+    return user;
   } catch (error: any) {
     await session.abortTransaction();
-    throw new AppError(httpStatus.BAD_REQUEST, `Failed to follow user: ${error?.message}`);
+    throw new AppError(httpStatus.BAD_REQUEST, `Failed to follow user: ${error.message}`);
   } finally {
     session.endSession();
   }
@@ -298,59 +295,64 @@ const userFollowToDB = async (email: string, payload: { id: string }) => {
 
 // user unfollow with following array element remove and follwer array element remove
 const userUnfollowToDB = async (email: string, payload: { id: string }) => {
-  // Start session
   const session = await mongoose.startSession();
-  
+
   try {
     session.startTransaction();
 
     // Find the user and the user they want to unfollow
     const user = await User.findOne({ email }).session(session);
     const unfollowingUser = await User.findById(payload.id).session(session);
-    
-    // check is unfollow user id exist in user following array
-    if (unfollowingUser?._id && !user?.following.includes(unfollowingUser?._id.toString())) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'User not in list of your followed');
+
+    if (!user || !unfollowingUser) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User or target user not found');
     }
 
-
-    // Check if the users exist
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User performing the unfollow not found');
+    if (!user.following.includes(unfollowingUser._id.toString())) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'User not in the list of your followed users');
     }
 
-    if (!unfollowingUser) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User to unfollow not found');
-    }
-
-    // Prevent the user from unfollowing themselves
     if (user._id.toString() === unfollowingUser._id.toString()) {
       throw new AppError(httpStatus.BAD_REQUEST, 'You cannot unfollow yourself');
     }
 
-    // Update the following array of the user
-    user.following = user.following.filter(id => id.toString() !== unfollowingUser._id.toString());
-    await user.save({ session });
+    // Update the following array of the current user
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $pull: { following: unfollowingUser._id.toString() } },
+      { session }
+    );
 
-    // Update the followers array of the unfollowed user
-    unfollowingUser.followers = unfollowingUser.followers.filter(id => id.toString() !== user._id.toString());
-    await unfollowingUser.save({ session });
+    // Update the followers array of the target user
+    await User.findOneAndUpdate(
+      { _id: unfollowingUser._id },
+      { $pull: { followers: user._id.toString() } },
+      { session }
+    );
 
-    // Commit the transaction if all updates are successful
     await session.commitTransaction();
-
     return unfollowingUser;
-
   } catch (error: any) {
-    // Abort the transaction in case of error
     await session.abortTransaction();
-    throw new AppError(httpStatus.BAD_REQUEST, `Failed to unfollow user: ${error?.message}`);
+    throw new AppError(httpStatus.BAD_REQUEST, `Failed to unfollow user: ${error.message}`);
   } finally {
-    // End the session
     session.endSession();
   }
 };
 
+
+
+// get user followers
+const getUserFollowersFromDB = async (email: string) => {
+  const user = await User.findOne({ email }).populate('followers');
+  return user?.followers;
+};
+
+// get user following
+const getUserFollowingFromDB = async (email: string) => {
+  const user = await User.findOne({ email }).populate('following');
+  return user?.following;
+};
 
 
 // change status
@@ -368,5 +370,7 @@ export const UserServices = {
   getUserProfileFromDB, 
   updateUserToDB,
   userFollowToDB,
-  userUnfollowToDB
+  userUnfollowToDB,
+  getUserFollowersFromDB,
+  getUserFollowingFromDB
 };

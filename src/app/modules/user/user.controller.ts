@@ -91,6 +91,32 @@ const userUnfollow = catchAsync(async (req, res) => {
   });
 });
 
+// get user followers
+const getUserFollowers = catchAsync(async (req, res) => {
+  const { email } = req.user;
+
+  const result = await UserServices.getUserFollowersFromDB(email);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User followers retived successfully',
+    data: result,
+  });
+});
+
+// get user following
+const getUserFollowing = catchAsync(async (req, res) => {
+  const { email } = req.user;
+
+  const result = await UserServices.getUserFollowingFromDB(email);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User following retived successfully',
+    data: result,
+  });
+});
+
 
 // get me controller
 const getMe = catchAsync(async (req, res) => {
@@ -127,5 +153,7 @@ export const UserController = {
   userProfile,
   updateUser,
   userFollow,
-  userUnfollow
+  userUnfollow,
+  getUserFollowers,
+  getUserFollowing
 };
