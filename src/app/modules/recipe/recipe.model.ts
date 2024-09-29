@@ -61,13 +61,21 @@ const recipeSchema = new Schema<IRecipe>(
       type: Number,
       default: 0
     },
+    upvotedBy: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+    },
+    downvotedBy: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+    },
   createdBy: {
     type: Schema.Types.ObjectId,  // Reference to the User model
     ref: 'User',
     required: [true, 'Created by is required']
   },
-  isDeleted: {
-    type: Boolean,
+    isDeleted: {
+      type: Boolean,
       default: false,
     },
   },

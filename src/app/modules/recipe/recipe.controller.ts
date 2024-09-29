@@ -60,6 +60,34 @@ const updateRecipe = catchAsync(async (req, res) => {
   });
 });
 
+// upvote recipe controller
+const upvoteRecipe = catchAsync(async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  const result = await RecipeServices.upvoteRecipe(user, id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'recipe upvoted successfully',
+    data: result,
+  });
+});
+
+// downvote recipe controller
+const downvoteRecipe = catchAsync(async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  const result = await RecipeServices.downvoteRecipe(user, id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'recipe downvoted successfully',
+    data: result,
+  });
+});
+
 // delte single recipe controller
 const deleteRecipe = catchAsync(async (req, res) => {
   const user = req.user;
@@ -79,5 +107,7 @@ export const RecipeController = {
   createRecipe,
   getSingleRecipe,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  upvoteRecipe,
+  downvoteRecipe
 };

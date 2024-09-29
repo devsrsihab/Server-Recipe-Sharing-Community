@@ -10,8 +10,8 @@ router.get('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getAllRe
 router.get('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getSingleRecipe);
 router.put('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.updateRecipe);
 router.delete('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.deleteRecipe);
-    
-
+router.post('/:id/upvote', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.upvoteRecipe);
+router.post('/:id/downvote', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.downvoteRecipe);
 
 export const RecipeRoute = router;
     
