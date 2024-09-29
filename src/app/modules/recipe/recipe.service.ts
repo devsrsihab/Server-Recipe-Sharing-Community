@@ -18,7 +18,7 @@ const createRecipe = async (email: string, payload: IRecipe) => {
   return result;
 };
 
-// get all students
+// get all recipes
 const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, unknown>) => {
 
   // user ie
@@ -41,53 +41,24 @@ const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, u
   };
 };
 
-// get single student
-// const getSingleStudentFromDB = async (id: string) => {
-//   // const result = await Student.findOne({ id });
-//   const result = await Student.findOne({ id })
-//     .populate('admissionSemester')
-//     .populate({
-//       path: 'academicDepartment',
-//       populate: {
-//         path: 'academicFaculty',
-//       },
-//     });
-//   return result;
-// };
+// get single recipe
+const getSingleRecipeFromDB = async (id: string) => {
+  console.log(id);
+  const result = await Recipe.findById(id).populate('createdBy');
+  return result;
+};
 
-// update student
-// const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
-//   const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+// update recipe
+const updateRecipeToDB = async (id: string, payload: Partial<IRecipe>) => {
 
-//   const modifiedUpdatedData: Record<string, unknown> = { ...remainingStudentData };
+  const result = await Recipe.findByIdAndUpdate( id , payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
 
-//   // dynamic loop for name
-//   if (name && Object.keys(name).length) {
-//     for (const [key, value] of Object.entries(name)) {
-//       modifiedUpdatedData[`name.${key}`] = value;
-//     }
-//   }
-//   // dynamic loop for guardian
-//   if (guardian && Object.keys(guardian).length) {
-//     for (const [key, value] of Object.entries(guardian)) {
-//       modifiedUpdatedData[`guardian.${key}`] = value;
-//     }
-//   }
-//   // dynamic loop for localGuardian
-//   if (localGuardian && Object.keys(localGuardian).length) {
-//     for (const [key, value] of Object.entries(localGuardian)) {
-//       modifiedUpdatedData[`localGuardian.${key}`] = value;
-//     }
-//   }
-
-//   const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
-//     new: true,
-//     runValidators: true,
-//   });
-//   return result;
-// };
-
-// get single student
+// delete recipe
 // const deleteStudentFromDB = async (id: string) => {
 //   const session = await mongoose.startSession();
 
@@ -128,5 +99,7 @@ const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, u
 
 export const RecipeServices = {
   getAllRecipesFromDB,
-  createRecipe
+  createRecipe,
+  getSingleRecipeFromDB,
+  updateRecipeToDB
 };

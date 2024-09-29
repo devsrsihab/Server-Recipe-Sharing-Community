@@ -34,31 +34,30 @@ const getAllRecipes = catchAsync(async (req, res) => {
 });
 
 // get single recipe controller
-// const getSingleStudent = catchAsync(async (req, res) => {
-//   const { id } = req.params;
-//   const result = await StudentServices.getSingleStudentFromDB(id);
+const getSingleRecipe = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await RecipeServices.getSingleRecipeFromDB(id);
 
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'single recipe get successfully',
-//     data: result || 'no data found',
-//   });
-// });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single recipe get successfully',
+    data: result || 'no data found',
+  });
+});
 
 // update recipe controller
-// const updateStudent = catchAsync(async (req, res) => {
-//   const { studentId } = req.params;
-//   const { recipe } = req.body;
-//   const result = await StudentServices.updateStudentToDB(studentId, recipe);
+const updateRecipe = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await RecipeServices.updateRecipeToDB(id, req.body);
 
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'recipe updated successfully',
-//     data: result || 'no data found',
-//   });
-// });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'recipe updated successfully',
+    data: result || 'no data found',
+  });
+});
 
 // delte single recipe controller
 // const deleteStudent = catchAsync(async (req, res) => {
@@ -75,5 +74,7 @@ const getAllRecipes = catchAsync(async (req, res) => {
 
 export const RecipeController = {
   getAllRecipes,
-  createRecipe
+  createRecipe,
+  getSingleRecipe,
+  updateRecipe
 };
