@@ -3,6 +3,9 @@ import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import { Recipe } from './recipe.model';
 import { IRecipe } from './recipe.interface';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { recipeSearchableFields } from './recipe.constant';
+import { JwtPayload } from 'jsonwebtoken';
 
 // create recipe
 const createRecipe = async (email: string, payload: IRecipe) => {
@@ -11,37 +14,32 @@ const createRecipe = async (email: string, payload: IRecipe) => {
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
-  console.log(user?._id);
   const result = await Recipe.create({ ...payload, createdBy: user?._id });
   return result;
 };
 
 // get all students
-// const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-//   const studentQuery = new QueryBuilder(
-//     Student.find()
-//       .populate('admissionSemester')
-//       .populate({
-//         path: 'academicDepartment',
-//         populate: {
-//           path: 'academicFaculty',
-//         },
-//       }),
-//     query,
-//   )
-//     .search(studentSearchableFields)
-//     .filter()
-//     .sort()
-//     .paginate()
-//     .fields();
+const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, unknown>) => {
 
-//   const result = await studentQuery.modelQuery;
-//   const meta = await studentQuery.countTotal();
-//   return {
-//     meta,
-//     result,
-//   };
-// };
+  // user ie
+  const user = await User.findOne({email: userData.email}).select('_id');
+ const baseModel = userData?.role === 'user' ? Recipe.find({createdBy: user?._id}) : Recipe.find();
+
+  // query builder
+  const recipeQuery = new QueryBuilder(baseModel.populate('createdBy'), query)
+                      .search(recipeSearchableFields)
+                      .filter()
+                      .sort()
+                      .paginate()
+                      .fields();
+
+  const result = await recipeQuery.modelQuery;
+  const meta = await recipeQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
+};
 
 // get single student
 // const getSingleStudentFromDB = async (id: string) => {
@@ -129,9 +127,6 @@ const createRecipe = async (email: string, payload: IRecipe) => {
 // };
 
 export const RecipeServices = {
-  // getAllStudentsFromDB,
-  // getSingleStudentFromDB,
-  // updateStudentToDB,
-  // deleteStudentFromDB,
+  getAllRecipesFromDB,
   createRecipe
 };

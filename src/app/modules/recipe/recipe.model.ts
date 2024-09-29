@@ -66,11 +66,12 @@ const recipeSchema = new Schema<IRecipe>(
     ref: 'User',
     required: [true, 'Created by is required']
   },
-    isDeleted: {
-      type: Boolean,
+  isDeleted: {
+    type: Boolean,
       default: false,
     },
   },
+  {timestamps: true}
 );
 
 

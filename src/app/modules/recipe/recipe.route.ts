@@ -6,6 +6,7 @@ import { USER_ROLE } from '../user/user.constant';
 const router = express.Router();
 
 router.post('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.createRecipe);
+router.get('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getAllRecipes);
 
 export const RecipeRoute = router;
     

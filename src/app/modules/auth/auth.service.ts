@@ -50,7 +50,6 @@ const loginUser = async (payload: TLoginUser) => {
 
   // checking password
   const isPasswordMatch = await User.isPasswordMatch(payload.password, user.password);
-  console.log( user);
 
   if (!isPasswordMatch) {
     throw new AppError(httpStatus.FORBIDDEN, 'Incorrect password');
@@ -117,7 +116,6 @@ const changePassword = async (
     payload.newPassword,
     Number(config.bcrypt_salt_rounds),
   );
-  console.log(userData);
 
   const result = User.findOneAndUpdate(
     { email: userData.email, role: userData.role },
@@ -139,7 +137,6 @@ const refreshToken = async (token: string) => {
   }
 
   // Verify the token
-  console.log('hello');
   const decoded = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
 
 
