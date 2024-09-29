@@ -50,6 +50,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   // checking password
   const isPasswordMatch = await User.isPasswordMatch(payload.password, user.password);
+  console.log( user);
 
   if (!isPasswordMatch) {
     throw new AppError(httpStatus.FORBIDDEN, 'Incorrect password');

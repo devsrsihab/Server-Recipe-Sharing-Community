@@ -296,6 +296,62 @@ const userFollowToDB = async (email: string, payload: { id: string }) => {
   }
 };
 
+// user unfollow with following array element remove and follwer array element remove
+const userUnfollowToDB = async (email: string, payload: { id: string }) => {
+  // Start session
+  const session = await mongoose.startSession();
+  
+  try {
+    session.startTransaction();
+
+    // Find the user and the user they want to unfollow
+    const user = await User.findOne({ email }).session(session);
+    const unfollowingUser = await User.findById(payload.id).session(session);
+    
+    // check is unfollow user id exist in user following array
+    if (unfollowingUser?._id && !user?.following.includes(unfollowingUser?._id.toString())) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'User not in list of your followed');
+    }
+
+
+    // Check if the users exist
+    if (!user) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User performing the unfollow not found');
+    }
+
+    if (!unfollowingUser) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User to unfollow not found');
+    }
+
+    // Prevent the user from unfollowing themselves
+    if (user._id.toString() === unfollowingUser._id.toString()) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'You cannot unfollow yourself');
+    }
+
+    // Update the following array of the user
+    user.following = user.following.filter(id => id.toString() !== unfollowingUser._id.toString());
+    await user.save({ session });
+
+    // Update the followers array of the unfollowed user
+    unfollowingUser.followers = unfollowingUser.followers.filter(id => id.toString() !== user._id.toString());
+    await unfollowingUser.save({ session });
+
+    // Commit the transaction if all updates are successful
+    await session.commitTransaction();
+
+    return unfollowingUser;
+
+  } catch (error: any) {
+    // Abort the transaction in case of error
+    await session.abortTransaction();
+    throw new AppError(httpStatus.BAD_REQUEST, `Failed to unfollow user: ${error?.message}`);
+  } finally {
+    // End the session
+    session.endSession();
+  }
+};
+
+
 
 // change status
 const changeStatus = async (id: string, payload: { status: string }) => {
@@ -311,5 +367,6 @@ export const UserServices = {
   changeStatus,
   getUserProfileFromDB, 
   updateUserToDB,
-  userFollowToDB
+  userFollowToDB,
+  userUnfollowToDB
 };

@@ -36,6 +36,14 @@ router.post(
   UserController.userFollow,
 );
 
+// user unfollow
+router.patch(
+  '/unfollow',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  validateRequest(UserValidations.userFollowValidationSchema),
+  UserController.userUnfollow,
+);
+
 
 
 router.post(

@@ -78,6 +78,19 @@ const userFollow = catchAsync(async (req, res) => {
   }); 
 });
 
+// user unfollow
+const userUnfollow = catchAsync(async (req, res) => {
+  const { email } = req.user;
+
+  const result = await UserServices.userUnfollowToDB(email, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User unfollow successfully',
+    data: result,
+  });
+});
+
 
 // get me controller
 const getMe = catchAsync(async (req, res) => {
@@ -113,5 +126,6 @@ export const UserController = {
   changeStatus,
   userProfile,
   updateUser,
-  userFollow
+  userFollow,
+  userUnfollow
 };
