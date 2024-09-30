@@ -209,6 +209,24 @@ const createUserToDB = async (payload: TUser) => {
   return user;
 };
 
+// admin all user preview 
+const adminAllUserFromDB = async ( query: Record<string, unknown>) => {
+
+  // query builder
+  const recipeQuery = new QueryBuilder(User.find(), query)
+                      .filter()
+                      .sort()
+                      .paginate()
+                      .fields();
+
+  const result = await recipeQuery.modelQuery;
+  const meta = await recipeQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
+};
+
 // update user 
 const adminUpdateUserToDB = async (id: string, payload: TUser) => {
   const { name, ...remainingUserData } = payload;
@@ -232,23 +250,12 @@ const adminDetailsUser = async (id: string) => {
   return result;
 };
 
-// admin all user preview 
-const adminAllUserFromDB = async ( query: Record<string, unknown>) => {
-
-  // query builder
-  const recipeQuery = new QueryBuilder(User.find(), query)
-                      .filter()
-                      .sort()
-                      .paginate()
-                      .fields();
-
-  const result = await recipeQuery.modelQuery;
-  const meta = await recipeQuery.countTotal();
-  return {
-    meta,
-    result,
-  };
+// delete user to update isDeleted true
+const adminDeleteUserToDB = async (id: string) => {
+  const result = await User.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+  return result;
 };
+
 
 
 // get user profile
@@ -420,5 +427,6 @@ export const UserServices = {
   adminUpdateUserToDB,
   createUserToDB, 
   adminDetailsUser,
-  adminAllUserFromDB
+  adminAllUserFromDB,
+  adminDeleteUserToDB
 };

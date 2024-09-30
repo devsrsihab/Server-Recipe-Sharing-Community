@@ -51,6 +51,19 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+// admin all user preview 
+const adminAllUser = catchAsync(async (req, res) => {
+  const query = req.query;
+  const result = await UserServices.adminAllUserFromDB(query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All user details retived successfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
+
 // admin update user
 const adminUpdateUser = catchAsync(async (req, res) => {
   const { userId } = req.params;
@@ -76,18 +89,19 @@ const adminDetailsUser = catchAsync(async (req, res) => {
   });
 });
 
-// admin all user preview 
-const adminAllUser = catchAsync(async (req, res) => {
-  const query = req.query;
-  const result = await UserServices.adminAllUserFromDB(query);
+// admin delete user
+const adminDeleteUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const result = await UserServices.adminDeleteUserToDB(userId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'All user details retived successfully',
-    meta: result.meta,
-    data: result.result,
+    message: 'User deleted successfully',
+    data: result,
   });
 });
+
+
 
 
 // get user profile
@@ -209,5 +223,6 @@ export const UserController = {
   adminUpdateUser,
   createUser,
   adminDetailsUser,
-  adminAllUser
+  adminAllUser,
+  adminDeleteUser
 };

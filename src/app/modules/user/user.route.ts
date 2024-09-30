@@ -24,6 +24,13 @@ router.get(
   UserController.adminAllUser,
 );
 
+// admin delete user
+router.delete(
+  '/admin-delete-user/:userId',
+  auth(USER_ROLE.admin),
+  UserController.adminDeleteUser,
+);
+
 // admin update user
 router.put(
   '/admin-update-user/:userId',
