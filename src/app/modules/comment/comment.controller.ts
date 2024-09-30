@@ -25,7 +25,7 @@ const getComment = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Comment fetched successfully',
-    data: result,
+    data: result.length > 0 ? result : "Recipe have no comment yet",
   });
 });
 

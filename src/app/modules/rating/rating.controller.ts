@@ -25,7 +25,7 @@ const getRating = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Rating fetched successfully',
-    data: result,
+    data: result.length > 0 ? result : "Recipe have no rating yet",
   });
 });
 
