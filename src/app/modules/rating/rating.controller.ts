@@ -8,7 +8,7 @@ import catchAsync from '../../utils/catchAsync';
 const makeRating = catchAsync(async (req, res) => {
   const { email } = req.user;
   const payload = req.body;
-  const result = await RecipeServices.makeRating(email, payload);
+  const result = await RecipeServices.makeRatingToDB(email, payload);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -17,9 +17,21 @@ const makeRating = catchAsync(async (req, res) => {
   });
 });
 
+// get all rating based on recipe id
+const getRating = catchAsync(async (req, res) => {
+  const { recipeId } = req.params;
+  const result = await RecipeServices.getRatingFromDB(recipeId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Rating fetched successfully',
+    data: result,
+  });
+});
 
 
 
 export const RatingController = {
   makeRating,
+  getRating,
 };

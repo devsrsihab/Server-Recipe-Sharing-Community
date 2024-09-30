@@ -9,7 +9,7 @@ import { Recipe } from '../recipe/recipe.model';
 import mongoose from 'mongoose';
 
 // create recipe
-const makeRating = async (email: JwtPayload,payload: {recipeId: string, rating: number}) => {
+const makeRatingToDB = async (email: JwtPayload,payload: {recipeId: string, rating: number}) => {
 
     const user = await User.findOne({ email }).select('_id email');
     
@@ -70,10 +70,17 @@ const makeRating = async (email: JwtPayload,payload: {recipeId: string, rating: 
 
 };
 
+// get all rating based on recipe id
+const getRatingFromDB = async (recipeId: string) => {
+  const rating = await Rating.find({recipe: recipeId}).populate('user');
+  return rating;
+}
+
 
 
 
 
 export const RecipeServices = {
-  makeRating,
+  makeRatingToDB,
+  getRatingFromDB,
 };
