@@ -101,9 +101,6 @@ const adminDeleteUser = catchAsync(async (req, res) => {
   });
 });
 
-
-
-
 // get user profile
 const userProfile = catchAsync(async (req, res) => {
   const { email, role } = req.user;

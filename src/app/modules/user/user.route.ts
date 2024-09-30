@@ -11,7 +11,7 @@ const router = express.Router();
 
 // create user
 router.post(
-  '/create-user',
+  '/admin-create-user',
   auth(USER_ROLE.admin),
   validateRequest(UserValidations.createUserValidationSchema),
   UserController.createUser,
@@ -22,13 +22,6 @@ router.get(
   '/admin-all-user',
   auth(USER_ROLE.admin),
   UserController.adminAllUser,
-);
-
-// admin delete user
-router.delete(
-  '/admin-delete-user/:userId',
-  auth(USER_ROLE.admin),
-  UserController.adminDeleteUser,
 );
 
 // admin update user
@@ -45,6 +38,17 @@ router.get(
   auth(USER_ROLE.admin),
   UserController.adminDetailsUser,
 );
+
+// admin delete user
+router.delete(
+  '/admin-delete-user/:userId',
+  auth(USER_ROLE.admin),
+  UserController.adminDeleteUser,
+);
+
+
+
+
 
 
 // user profile get 
