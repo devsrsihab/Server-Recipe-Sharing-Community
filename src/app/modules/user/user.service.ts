@@ -340,8 +340,6 @@ const userUnfollowToDB = async (email: string, payload: { id: string }) => {
   }
 };
 
-
-
 // get user followers
 const getUserFollowersFromDB = async (email: string) => {
   const user = await User.findOne({ email }).populate('followers');

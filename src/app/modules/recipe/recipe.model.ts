@@ -61,6 +61,10 @@ const recipeSchema = new Schema<IRecipe>(
       type: Number,
       default: 0
     },
+    ratings: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Rating',
+    },
     upvotedBy: {
       type: [Schema.Types.ObjectId],
       ref: 'User',

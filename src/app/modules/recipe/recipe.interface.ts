@@ -15,6 +15,7 @@ export interface IRecipe {
   cookTime: number;            
   upvotes: number;             
   downvotes: number;     
+  ratings: Types.ObjectId[];  
   upvotedBy: Types.ObjectId[];  
   downvotedBy: Types.ObjectId[];  
   createdBy: Types.ObjectId;  
