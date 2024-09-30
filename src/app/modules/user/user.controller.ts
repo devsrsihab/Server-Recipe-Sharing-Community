@@ -64,6 +64,32 @@ const adminUpdateUser = catchAsync(async (req, res) => {
   });
 });
 
+// admin single preview user
+const adminDetailsUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const result = await UserServices.adminDetailsUser(userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User details retived successfully',
+    data: result,
+  });
+});
+
+// admin all user preview 
+const adminAllUser = catchAsync(async (req, res) => {
+  const query = req.query;
+  const result = await UserServices.adminAllUserFromDB(query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All user details retived successfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
+
+
 // get user profile
 const userProfile = catchAsync(async (req, res) => {
   const { email, role } = req.user;
@@ -181,5 +207,7 @@ export const UserController = {
   getUserFollowing,
   changeUserRole,
   adminUpdateUser,
-  createUser
+  createUser,
+  adminDetailsUser,
+  adminAllUser
 };

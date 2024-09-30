@@ -16,6 +16,7 @@ import { Faculty } from '../faculty/faculty.model';
 import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // create student
 const createStudentToDB = async (file: any, password: string, payload: TStudent) => {
@@ -225,6 +226,29 @@ const adminUpdateUserToDB = async (id: string, payload: TUser) => {
   return result;
 };
 
+// admin single preview user 
+const adminDetailsUser = async (id: string) => {
+  const result = await User.findById(id);
+  return result;
+};
+
+// admin all user preview 
+const adminAllUserFromDB = async ( query: Record<string, unknown>) => {
+
+  // query builder
+  const recipeQuery = new QueryBuilder(User.find(), query)
+                      .filter()
+                      .sort()
+                      .paginate()
+                      .fields();
+
+  const result = await recipeQuery.modelQuery;
+  const meta = await recipeQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
+};
 
 
 // get user profile
@@ -394,5 +418,7 @@ export const UserServices = {
   getUserFollowingFromDB,
   changeUserRole,
   adminUpdateUserToDB,
-  createUserToDB
+  createUserToDB, 
+  adminDetailsUser,
+  adminAllUserFromDB
 };

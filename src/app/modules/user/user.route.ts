@@ -17,12 +17,26 @@ router.post(
   UserController.createUser,
 );
 
+// admin all user preview
+router.get(
+  '/admin-all-user',
+  auth(USER_ROLE.admin),
+  UserController.adminAllUser,
+);
+
 // admin update user
 router.put(
   '/admin-update-user/:userId',
   auth(USER_ROLE.admin),
   validateRequest(UserValidations.adminUpdateUserValidationSchema),
   UserController.adminUpdateUser,
+);
+
+// admin single preview user
+router.get(
+  '/admin-details-user/:userId',
+  auth(USER_ROLE.admin),
+  UserController.adminDetailsUser,
 );
 
 
