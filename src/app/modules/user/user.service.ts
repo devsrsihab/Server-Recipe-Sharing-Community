@@ -201,14 +201,28 @@ const createUserToDB = async (payload: TUser) => {
     // generate a unique id
     payload.id = await generatUserId() || '';
   }
-
   
    // generate username
   payload.username = await generateUsername(payload.name);
-
-
   const user = await User.create(payload);
   return user;
+};
+
+// update user 
+const adminUpdateUserToDB = async (id: string, payload: TUser) => {
+  const { name, ...remainingUserData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = { ...remainingUserData };
+
+  // dynamic loop for name
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+
+  const result = await User.findByIdAndUpdate(id, modifiedUpdatedData, { new: true });
+  return result;
 };
 
 
@@ -379,5 +393,6 @@ export const UserServices = {
   getUserFollowersFromDB,
   getUserFollowingFromDB,
   changeUserRole,
+  adminUpdateUserToDB,
   createUserToDB
 };

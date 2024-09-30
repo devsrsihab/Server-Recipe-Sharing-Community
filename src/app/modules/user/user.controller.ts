@@ -51,6 +51,19 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+// admin update user
+const adminUpdateUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const userData = req.body;
+  const result = await UserServices.adminUpdateUserToDB(userId, userData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully', 
+    data: result,
+  });
+});
+
 // get user profile
 const userProfile = catchAsync(async (req, res) => {
   const { email, role } = req.user;
@@ -167,5 +180,6 @@ export const UserController = {
   getUserFollowers,
   getUserFollowing,
   changeUserRole,
+  adminUpdateUser,
   createUser
 };

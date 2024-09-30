@@ -28,6 +28,11 @@ const createUserValidationSchema = z.object({
   }),
 });
 
+// admin update user validation
+const adminUpdateUserValidationSchema = z.object({
+  body: createUserValidationSchema.partial(),
+});
+
 // update user validation
 const updateUserValidationSchema = z.object({
   body: UserSchemaValidation.partial(),
@@ -54,4 +59,13 @@ const changeUserRoleValidationSchema = z.object({
   }),
 });
 
-export const UserValidations = { createUserValidationSchema, userFollowValidationSchema, updateUserValidationSchema, UserSchemaValidation, changeStatusValidationSchema, changeUserRoleValidationSchema };
+export const UserValidations = { 
+  createUserValidationSchema,
+  userFollowValidationSchema,
+  updateUserValidationSchema,
+  UserSchemaValidation,
+  changeStatusValidationSchema,
+  changeUserRoleValidationSchema,
+  adminUpdateUserValidationSchema, 
+};
+

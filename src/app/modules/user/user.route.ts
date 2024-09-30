@@ -1,15 +1,29 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { UserController } from './user.controller';
-import { StudentValidations } from '../student/student.validation';
 import validateRequest from '../../middlewares/validateRequest';
-import { FacultyValidations } from '../faculty/faculty.validation';
-import { AdminValidations } from '../admin/admin.validation';
+
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
 import { UserValidations } from './user.validation';
-import { upload } from '../../utils/sendImageToCloudinary';
 
 const router = express.Router();
+
+
+// create user
+router.post(
+  '/create-user',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidations.createUserValidationSchema),
+  UserController.createUser,
+);
+
+// admin update user
+router.put(
+  '/admin-update-user/:userId',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidations.adminUpdateUserValidationSchema),
+  UserController.adminUpdateUser,
+);
 
 
 // user profile get 
@@ -57,18 +71,6 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.user),
   UserController.getUserFollowing,
 );
-
-
-// create user
-router.post(
-  '/create-user',
-  auth(USER_ROLE.admin),
-  validateRequest(UserValidations.createUserValidationSchema),
-  UserController.createUser,
-);
-
-
-
 
 // change status
 router.patch(
