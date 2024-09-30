@@ -65,6 +65,10 @@ const recipeSchema = new Schema<IRecipe>(
       type: [Schema.Types.ObjectId],
       ref: 'Rating',
     },
+    comments: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Comment',
+    },
     upvotedBy: {
       type: [Schema.Types.ObjectId],
       ref: 'User',

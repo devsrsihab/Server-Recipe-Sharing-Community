@@ -13,6 +13,7 @@ import { AuthRoute } from '../modules/auth/auth.route';
 import { EnrolledCourseRoute } from '../modules/enrolledCourse/enrolledCourse.route';
 import { RecipeRoute } from '../modules/recipe/recipe.route';
 import { RatingRoute } from '../modules/rating/rating.route';
+import { CommentRoute } from '../modules/comment/comment.route';
 
 const router = Router();
 
@@ -73,6 +74,10 @@ const moduleRoutes = [
   {
     path: '/ratings',
     route: RatingRoute,
+  }, 
+  {
+    path: '/comments',
+    route: CommentRoute,
   }
 ];
 

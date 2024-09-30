@@ -1,27 +1,19 @@
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
-import { Rating } from './rating.model';
+import { Comment } from './comment.model';
 import { JwtPayload } from 'jsonwebtoken';
 import { Recipe } from '../recipe/recipe.model';
 import mongoose from 'mongoose';
 
 // create recipe
-const makeRatingToDB = async (email: JwtPayload,payload: {recipeId: string, rating: number}) => {
+const makeCommentToDB = async (email: JwtPayload,payload: {recipeId: string, text: string}) => {
 
     const user = await User.findOne({ email }).select('_id email');
     
-    // console.log('user data ==>', user, 'email ==>', email);
     if (!user) {
       throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
     }  
-
-    // check user already rated this recipe
-    const isRated = await Rating.findOne({user: user?._id, recipe: payload.recipeId});
-    if(isRated){
-      throw new AppError(httpStatus.BAD_REQUEST, 'You already rated this recipe');
-    }
-
 
     // check recipe is exist
     const recipe = await Recipe.findById(payload.recipeId);
@@ -30,28 +22,26 @@ const makeRatingToDB = async (email: JwtPayload,payload: {recipeId: string, rati
     }
 
 
-      // start session
-  const session = await mongoose.startSession();
+    // start session
+    const session = await mongoose.startSession();
 
   try {
     // start session
     session.startTransaction();
     // create a rating transaction 01
-    const newRating = await Rating.create([{user: user?._id, recipe: payload.recipeId, rating: payload.rating}], { session }); // transaction return array
+    const newComment = await Comment.create([{user: user?._id, recipe: payload.recipeId, text: payload.text}], { session }); // transaction return array
 
     // if created the rating successfully then create the student
-    if (!newRating) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create rating');
+    if (!newComment) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create comment');
     }
 
-    const newRatingId = newRating[0]._id;
+    const newCommentId = newComment[0]._id;
 
-
-
-    const updatedRecipe = await Recipe.findByIdAndUpdate({_id: recipe._id}, {$push: {ratings: newRatingId}}, { session });
+    const updatedRecipe = await Recipe.findByIdAndUpdate({_id: recipe._id}, {$push: {comments: newCommentId}}, { session });
 
     if (!updatedRecipe) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update recipe ratings');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update recipe comments');
     }
 
     await session.commitTransaction();
@@ -69,9 +59,9 @@ const makeRatingToDB = async (email: JwtPayload,payload: {recipeId: string, rati
 };
 
 // get all rating based on recipe id
-const getRatingFromDB = async (recipeId: string) => {
-  const rating = await Rating.find({recipe: recipeId}).populate('user');
-  return rating;
+const getCommentFromDB = async (recipeId: string) => {
+  const comment = await Comment.find({recipe: recipeId}).populate('user');
+  return comment;
 }
 
 
@@ -79,6 +69,6 @@ const getRatingFromDB = async (recipeId: string) => {
 
 
 export const RecipeServices = {
-  makeRatingToDB,
-  getRatingFromDB,
+  makeCommentToDB,
+  getCommentFromDB,
 };
