@@ -7,7 +7,7 @@ import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
 import { TUser } from './user.interface';
 import { User } from './user.model';
-import { generatAdminId, generateStuentId, generatFacultyId } from './user.utils';
+import { generatAdminId, generateStuentId, generateUsername, generatFacultyId, generatUserId } from './user.utils';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
@@ -189,27 +189,29 @@ const createAdminToDB = async (password: string, payload: TAdmin) => {
   }
 };
 
-// get me servcies
-const getMeFromDB = async (userId: string, role: string) => {
-  let result = null;
 
-  // if user
-  if (role === 'student') {
-    result = await User.findOne({ id: userId });
+// create user 
+const createUserToDB = async (payload: TUser) => {
+
+  // if the role admin 
+  if(payload.role === 'admin'){
+    // generate a unique id
+    payload.id = await generatAdminId() || '';
+  }else {
+    // generate a unique id
+    payload.id = await generatUserId() || '';
   }
 
-  // if faculty
-  if (role === 'faculty') {
-    result = await User.findOne({ id: userId });
-  }
+  
+   // generate username
+  payload.username = await generateUsername(payload.name);
 
-  // if admin
-  if (role === 'admin') {
-    result = await User.findOne({ id: userId });
-  }
 
-  return result;
+  const user = await User.create(payload);
+  return user;
 };
+
+
 
 // get user profile
 const getUserProfileFromDB = async (email: string, role: string) => {
@@ -359,16 +361,23 @@ const changeStatus = async (id: string, payload: { status: string }) => {
   return result;
 };
 
+// change user role 
+const changeUserRole = async (id: string, payload: { role: string }) => {
+  const result = await User.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
 export const UserServices = {
   createStudentToDB,
   createFacultyToDB,
   createAdminToDB,
-  getMeFromDB,
   changeStatus,
   getUserProfileFromDB, 
   updateUserToDB,
   userFollowToDB,
   userUnfollowToDB,
   getUserFollowersFromDB,
-  getUserFollowingFromDB
+  getUserFollowingFromDB,
+  changeUserRole,
+  createUserToDB
 };

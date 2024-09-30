@@ -59,50 +59,31 @@ router.get(
 );
 
 
-
-
-
+// create user
 router.post(
-  '/create-student',
+  '/create-user',
   auth(USER_ROLE.admin),
-  upload.single('file'),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = JSON.parse(req.body.data);
-    next();
-  },
-  validateRequest(StudentValidations.createStudentValidationSchema),
-  UserController.createStudent,
+  validateRequest(UserValidations.createUserValidationSchema),
+  UserController.createUser,
 );
 
-// faculty create
-router.post(
-  '/create-faculty',
-  auth(USER_ROLE.admin),
-  validateRequest(FacultyValidations.createFacultyValidationSchema),
-  UserController.createFaculty,
-);
 
-// admin create
-router.post(
-  '/create-admin',
-  auth(USER_ROLE.admin),
-  validateRequest(AdminValidations.createAdminValidationSchema),
-  UserController.createAdmin,
-);
 
-// get me
-router.get(
-  '/me',
-  auth(USER_ROLE.admin, USER_ROLE.user),
-  UserController.getMe,
-);
 
 // change status
 router.patch(
-  '/change-status/:id',
+  '/change-status/:userId',
   auth(USER_ROLE.admin),
   validateRequest(UserValidations.changeStatusValidationSchema),
   UserController.changeStatus,
+);
+
+// change user role
+router.patch(
+  '/change-role/:userId',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidations.changeUserRoleValidationSchema),
+  UserController.changeUserRole,
 );
 
 export const UserRoute = router;

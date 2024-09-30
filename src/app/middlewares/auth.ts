@@ -39,20 +39,26 @@ const auth = (...requiredUserRole: TUserRole[]) => {
     const user = await User.isUserExistByEmail(email);
     const isDeleted = user?.isDeleted;
     const isUserBlocked = user?.status === 'blocked';
+    const isUsersuspended = user?.status === 'suspended';
 
     // user exist
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is Not Found');
+      throw new AppError(httpStatus.NOT_FOUND, 'Your account is not found');
     }
 
     // check deleted
     if (isDeleted) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is deleted');
+      throw new AppError(httpStatus.NOT_FOUND, 'Your account is deleted');
     }
 
     // check block
     if (isUserBlocked) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is blocked');
+      throw new AppError(httpStatus.NOT_FOUND, 'Your account is blocked');
+    }
+
+    // check suspended
+    if (isUsersuspended) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Your account is suspended');
     }
 
     // check the user issed password or jwt issued  time

@@ -39,6 +39,18 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+// create user
+const createUser = catchAsync(async (req, res) => {
+  const userData = req.body;
+  const result = await UserServices.createUserToDB(userData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User created successfully',
+    data: result,
+  });
+});
+
 // get user profile
 const userProfile = catchAsync(async (req, res) => {
   const { email, role } = req.user;
@@ -117,25 +129,11 @@ const getUserFollowing = catchAsync(async (req, res) => {
   });
 });
 
-
-// get me controller
-const getMe = catchAsync(async (req, res) => {
-  const { userId, role } = req.user;
-
-  const result = await UserServices.getMeFromDB(userId, role);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Get me retived successfully',
-    data: result,
-  });
-});
-
 // change status
 const changeStatus = catchAsync(async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
 
-  const result = await UserServices.changeStatus(id, req.body);
+  const result = await UserServices.changeStatus(userId, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -144,16 +142,30 @@ const changeStatus = catchAsync(async (req, res) => {
   });
 });
 
+// change user role
+const changeUserRole = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+
+  const result = await UserServices.changeUserRole(userId, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User role change successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
   createFaculty,
   createAdmin,
-  getMe,
   changeStatus,
   userProfile,
   updateUser,
   userFollow,
   userUnfollow,
   getUserFollowers,
-  getUserFollowing
+  getUserFollowing,
+  changeUserRole,
+  createUser
 };
