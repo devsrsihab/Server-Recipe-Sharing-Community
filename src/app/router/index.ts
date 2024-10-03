@@ -14,6 +14,7 @@ import { EnrolledCourseRoute } from '../modules/enrolledCourse/enrolledCourse.ro
 import { RecipeRoute } from '../modules/recipe/recipe.route';
 import { RatingRoute } from '../modules/rating/rating.route';
 import { CommentRoute } from '../modules/comment/comment.route';
+import { CategoryRoutes } from '../modules/category/category.route';
 
 const router = Router();
 
@@ -70,15 +71,19 @@ const moduleRoutes = [
   {
     path: '/recipes',
     route: RecipeRoute,
-  }, 
+  },
   {
     path: '/ratings',
     route: RatingRoute,
-  }, 
+  },
   {
     path: '/comments',
     route: CommentRoute,
-  }
+  },
+  {
+    path: '/categories',
+    route: CategoryRoutes,
+  },
 ];
 
 // travers the all route

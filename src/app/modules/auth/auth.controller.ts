@@ -5,11 +5,8 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 import config from '../../config';
 
-
-
-// register 
+// register
 const registerUser = catchAsync(async (req, res) => {
-  console.log(req.body);
   const result = await AuthServices.registerUserToDB(req.body);
 
   sendResponse(res, {
@@ -20,17 +17,16 @@ const registerUser = catchAsync(async (req, res) => {
   });
 });
 
-
 // login
 const loginUser = catchAsync(async (req, res) => {
   const result: any = await AuthServices.loginUser(req.body);
-  const { refreshToken, accessToken, needPassWord } = result;
+  const { srsRecipeRefreshToken, srsRecipeAccessToken, needPassWord } = result;
 
   // save refresh token in cookie
-  res.cookie('refreshToken', refreshToken, {
+  res.cookie('srsRecipeRefreshToken', srsRecipeRefreshToken, {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: true, 
+    sameSite: true,
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 
@@ -38,7 +34,7 @@ const loginUser = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'login successfully',
-    data: { accessToken, needPassWord },
+    data: { srsRecipeAccessToken, needPassWord },
   });
 });
 
@@ -101,5 +97,5 @@ export const AuthControllers = {
   refreshToken,
   forgetPassword,
   resetPassword,
-  registerUser
+  registerUser,
 };

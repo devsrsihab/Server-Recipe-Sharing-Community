@@ -17,7 +17,6 @@ const createRecipe = catchAsync(async (req, res) => {
   });
 });
 
-
 // get all recipe conroller
 const getAllRecipes = catchAsync(async (req, res) => {
   const user = req.user;
@@ -109,5 +108,5 @@ export const RecipeController = {
   updateRecipe,
   deleteRecipe,
   upvoteRecipe,
-  downvoteRecipe
+  downvoteRecipe,
 };

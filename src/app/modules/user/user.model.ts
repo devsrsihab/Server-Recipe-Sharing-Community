@@ -10,6 +10,7 @@ const nameSchema = new Schema<IName>({
   lastName: { type: String, required: true },
 });
 
+const defaultAvater = "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5.jpg?s=250"
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -38,6 +39,7 @@ const userSchema = new Schema<TUser, UserModel>(
     profilePicture: {
       type: String,
       required: false, 
+      default: defaultAvater,
     },
     bio: {
       type: String,

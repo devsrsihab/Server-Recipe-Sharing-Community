@@ -20,18 +20,18 @@ const createRecipe = async (email: string, payload: IRecipe) => {
 
 // get all recipes
 const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, unknown>) => {
-
   // user ie
-  const user = await User.findOne({email: userData.email}).select('_id');
- const baseModel = userData?.role === 'user' ? Recipe.find({createdBy: user?._id}) : Recipe.find();
+  const user = await User.findOne({ email: userData.email }).select('_id');
+  const baseModel =
+    userData?.role === 'user' ? Recipe.find({ createdBy: user?._id }) : Recipe.find();
 
   // query builder
   const recipeQuery = new QueryBuilder(baseModel.populate('createdBy'), query)
-                      .search(recipeSearchableFields)
-                      .filter()
-                      .sort()
-                      .paginate()
-                      .fields();
+    .search(recipeSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
   const result = await recipeQuery.modelQuery;
   const meta = await recipeQuery.countTotal();
@@ -50,18 +50,19 @@ const getSingleRecipeFromDB = async (id: string) => {
 
 // update recipe
 const updateRecipeToDB = async (userData: JwtPayload, id: string, payload: Partial<IRecipe>) => {
+  // if user role is user then delete only his recipe
+  const user = await User.findOne({ email: userData.email }).select('_id email');
+  const isRecipeOwner = await Recipe.findOne({ _id: id, createdBy: user?._id });
 
-    // if user role is user then delete only his recipe
-  const user = await User.findOne({email: userData.email}).select('_id email');
-  const isRecipeOwner = await Recipe.findOne({_id: id, createdBy: user?._id});
-  
-    // if role user but not owner of the recipe
-  if(userData?.role === 'user' && !isRecipeOwner){
-    throw new AppError(httpStatus.FORBIDDEN, 'This is Not Your Recipe, You are not allowed to update this recipe');
+  // if role user but not owner of the recipe
+  if (userData?.role === 'user' && !isRecipeOwner) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'This is Not Your Recipe, You are not allowed to update this recipe',
+    );
   }
 
-
-  const result = await Recipe.findByIdAndUpdate( id , payload, {
+  const result = await Recipe.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
@@ -71,7 +72,7 @@ const updateRecipeToDB = async (userData: JwtPayload, id: string, payload: Parti
 // upvote recipe
 const upvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
   const user = await User.findOne({ email: userData.email }).select('_id email');
-  
+
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
@@ -81,28 +82,30 @@ const upvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Recipe not found');
   }
 
-  // 1. check user already upvoted 
-  const isUserUpvoted = await Recipe.findOne({_id: recipeId, upvotedBy: {$in: [user?._id]}})
+  // 1. check user already upvoted
+  const isUserUpvoted = await Recipe.findOne({ _id: recipeId, upvotedBy: { $in: [user?._id] } });
   if (isUserUpvoted) {
     throw new AppError(httpStatus.BAD_REQUEST, 'You already upvoted this recipe');
   }
 
   // 2. if user not upvoted then add user id to upvotedBy array
-  const result = await Recipe.findByIdAndUpdate(recipeId, {
-    $push: { upvotedBy: user?._id },
-    $pull: { downvotedBy: user?._id },
-    $inc: { upvotes: 1, downvotes: -1 },
-  }, { new: true });
+  const result = await Recipe.findByIdAndUpdate(
+    recipeId,
+    {
+      $push: { upvotedBy: user?._id },
+      $pull: { downvotedBy: user?._id },
+      $inc: { upvotes: 1, downvotes: -1 },
+    },
+    { new: true },
+  );
 
   return result;
-
- 
 };
 
 // downvote recipe
 const downvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
   const user = await User.findOne({ email: userData.email }).select('_id email');
-  
+
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
@@ -112,43 +115,48 @@ const downvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Recipe not found');
   }
 
-  // 1. check user already upvoted 
-  const isUserDownvoted = await Recipe.findOne({_id: recipeId, downvotedBy: {$in: [user?._id]}})
+  // 1. check user already upvoted
+  const isUserDownvoted = await Recipe.findOne({
+    _id: recipeId,
+    downvotedBy: { $in: [user?._id] },
+  });
   if (isUserDownvoted) {
     throw new AppError(httpStatus.BAD_REQUEST, 'You already downvoted this recipe');
   }
 
   // 2. if user not downvoted then add user id to downvotedBy array
-  const result = await Recipe.findByIdAndUpdate(recipeId, {
-    $push: { downvotedBy: user?._id },
-    $pull: { upvotedBy: user?._id },
-    $inc: { downvotes: 1, upvotes: -1 },
-  }, { new: true });
+  const result = await Recipe.findByIdAndUpdate(
+    recipeId,
+    {
+      $push: { downvotedBy: user?._id },
+      $pull: { upvotedBy: user?._id },
+      $inc: { downvotes: 1, upvotes: -1 },
+    },
+    { new: true },
+  );
 
   return result;
-  
-}
-
+};
 
 // delete recipe
 const deleteRecipeFromDB = async (userData: JwtPayload, id: string) => {
-
   // if user role is user then delete only his recipe
-  const user = await User.findOne({email: userData.email}).select('_id emai');
-  const isRecipeOwner = await Recipe.findOne({_id: id, createdBy: user?._id});
+  const user = await User.findOne({ email: userData.email }).select('_id emai');
+  const isRecipeOwner = await Recipe.findOne({ _id: id, createdBy: user?._id });
 
-    // if role user but not owner of the recipe
-  if(userData?.role === 'user' && !isRecipeOwner){
+  // if role user but not owner of the recipe
+  if (userData?.role === 'user' && !isRecipeOwner) {
     throw new AppError(httpStatus.FORBIDDEN, 'You are not allowed to delete this recipe');
   }
 
-
-  const baseModel = userData?.role === 'user' ? 
-  Recipe.findByIdAndUpdate({_id: id, createdBy: user?._id}, {isDeleted: true}, {new: true}) :
-  Recipe.findByIdAndUpdate(id, {isDeleted: true}, {new: true});
-
-
-
+  const baseModel =
+    userData?.role === 'user'
+      ? Recipe.findByIdAndUpdate(
+          { _id: id, createdBy: user?._id },
+          { isDeleted: true },
+          { new: true },
+        )
+      : Recipe.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
 
   const result = await baseModel;
   return result;
@@ -161,5 +169,5 @@ export const RecipeServices = {
   updateRecipeToDB,
   deleteRecipeFromDB,
   upvoteRecipe,
-  downvoteRecipe
+  downvoteRecipe,
 };

@@ -9,23 +9,19 @@ import { createToken } from './auth.utils';
 import jwt from 'jsonwebtoken';
 import { sendMail } from '../../utils/sendEmail';
 import { TUser } from '../user/user.interface';
-import {  generateUsername, generatUserId } from '../user/user.utils';
-
-
+import { generateUsername, generatUserId } from '../user/user.utils';
 
 // create student
 const registerUserToDB = async (payload: TUser) => {
-  
   // generate username
   payload.username = await generateUsername(payload.name);
   // generate a unique id
-  payload.id = await generatUserId() || '';
+  payload.id = (await generatUserId()) || '';
   // set user role user
   payload.role = 'user';
   const user = await User.create(payload);
   return user;
 };
-
 
 // create
 const loginUser = async (payload: TLoginUser) => {
@@ -61,20 +57,20 @@ const loginUser = async (payload: TLoginUser) => {
     role: user?.role,
   };
 
-  const accessToken = createToken(
+  const srsRecipeAccessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
   );
-  const refreshToken = createToken(
+  const srsRecipeRefreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_secret as string,
     config.jwt_refresh_expires_in as string,
   );
 
   return {
-    accessToken,
-    refreshToken,
+    srsRecipeAccessToken,
+    srsRecipeRefreshToken,
     needPassWord: user.needPasswordChange,
   };
 };
@@ -84,7 +80,6 @@ const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
 ) => {
-
   const user = await User.isUserExistByEmail(userData.email);
   const isDeleted = user?.isDeleted;
   const isUserBlocked = user?.status === 'blocked';
@@ -139,7 +134,6 @@ const refreshToken = async (token: string) => {
   // Verify the token
   const decoded = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
 
-
   // user role checking
   const { userId, iat } = decoded as JwtPayload;
   const user = await User.isUserExistByEmail(userId);
@@ -175,58 +169,51 @@ const refreshToken = async (token: string) => {
     role: user?.role,
   };
 
-  const accessToken = createToken(
+  const srsRecipeAccessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
   );
 
   return {
-    accessToken,
-  }
+    srsRecipeAccessToken,
+  };
 };
 
 // forget password
 const forgetPassword = async (email: string) => {
+  // user  existence checking
+  const user = await User.isUserExistByEmail(email);
+  const isDeleted = user?.isDeleted;
+  const isUserBlocked = user?.status === 'blocked';
 
-    // user  existence checking
-    const user = await User.isUserExistByEmail(email);
-    const isDeleted = user?.isDeleted;
-    const isUserBlocked = user?.status === 'blocked';
+  // user exist
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is Not Found');
+  }
 
-    // user exist
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is Not Found');
-    }
+  // check deleted
+  if (isDeleted) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is deleted');
+  }
 
-    // check deleted
-    if (isDeleted) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is deleted');
-    }
+  // check block
+  if (isUserBlocked) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is blocked');
+  }
 
-    // check block
-    if (isUserBlocked) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User is blocked');
-    }
+  // jwt token
+  const jwtPayload = {
+    email: user?.email,
+    role: user?.role,
+  };
 
-    // jwt token
-    const jwtPayload = {
-      email: user?.email,
-      role: user?.role,
-    };
+  const srsRecipeAccessToken = createToken(jwtPayload, config.jwt_access_secret as string, '10m');
 
-    const accessToken = createToken(
-      jwtPayload,
-      config.jwt_access_secret as string,
-      '10m'
-    );
+  // reset ui link
+  const resetUILink = `${config.reset_password_ui_link}/?id=${user.email}&token=${srsRecipeAccessToken}`;
 
-
-    // reset ui link 
-    const resetUILink = `${config.reset_password_ui_link}/?id=${user.email}&token=${accessToken}`;
-
-    sendMail(user.email, resetUILink);
-
+  sendMail(user.email, resetUILink);
 };
 
 // reset password
@@ -273,7 +260,7 @@ const resetPassword = async (payload: { email: string; newPassword: string }, to
     },
   );
 
-  return result
+  return result;
 };
 
 export const AuthServices = {
@@ -281,6 +268,6 @@ export const AuthServices = {
   changePassword,
   refreshToken,
   forgetPassword,
-  resetPassword, 
-  registerUserToDB
+  resetPassword,
+  registerUserToDB,
 };
