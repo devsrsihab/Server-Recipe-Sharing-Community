@@ -1,8 +1,9 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
-export interface IComment {    
+export interface IComment {
   user: Types.ObjectId;
   recipe: Types.ObjectId;
   text: string;
-  isDeleted: boolean;      
+  status: string;
+  isDeleted: boolean;
 }

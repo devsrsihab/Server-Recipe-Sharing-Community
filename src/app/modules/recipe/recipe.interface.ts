@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export interface IIngredient {
   name: string;
@@ -8,17 +8,18 @@ export interface IIngredient {
 export interface IRecipe {
   title: string;
   description: string;
-  ingredients: IIngredient[];  
-  instructions: string;        
-  category: string;            
-  prepTime: number;            
-  cookTime: number;            
-  upvotes: number;             
-  downvotes: number;     
-  ratings: Types.ObjectId[];  
-  comments: Types.ObjectId[];  
-  upvotedBy: Types.ObjectId[];  
-  downvotedBy: Types.ObjectId[];  
-  createdBy: Types.ObjectId;  
-  isDeleted: boolean;      
+  ingredients: IIngredient[];
+  instructions: string;
+  category: Types.ObjectId;
+  image: string;
+  prepTime: number;
+  cookTime: number;
+  upvotes: number;
+  downvotes: number;
+  ratings: Types.ObjectId[];
+  comments: Types.ObjectId[];
+  upvotedBy: Types.ObjectId[];
+  downvotedBy: Types.ObjectId[];
+  createdBy: Types.ObjectId;
+  isDeleted: boolean;
 }

@@ -14,6 +14,7 @@ const createRecipe = async (email: string, payload: IRecipe) => {
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
+
   const result = await Recipe.create({ ...payload, createdBy: user?._id });
   return result;
 };
@@ -26,7 +27,7 @@ const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, u
     userData?.role === 'user' ? Recipe.find({ createdBy: user?._id }) : Recipe.find();
 
   // query builder
-  const recipeQuery = new QueryBuilder(baseModel.populate('createdBy'), query)
+  const recipeQuery = new QueryBuilder(baseModel.populate('createdBy').populate('category'), query)
     .search(recipeSearchableFields)
     .filter()
     .sort()
@@ -43,8 +44,7 @@ const getAllRecipesFromDB = async (userData: JwtPayload, query: Record<string, u
 
 // get single recipe
 const getSingleRecipeFromDB = async (id: string) => {
-  console.log(id);
-  const result = await Recipe.findById(id).populate('createdBy');
+  const result = await Recipe.findById(id).populate('createdBy').populate('category');
   return result;
 };
 

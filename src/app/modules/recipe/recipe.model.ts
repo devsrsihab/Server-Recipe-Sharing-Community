@@ -14,52 +14,56 @@ const ingredientSchema = new Schema<IIngredient>({
   },
 });
 
-
-
 // recipe schema
 const recipeSchema = new Schema<IRecipe>(
   {
     title: {
-      type: String, 
+      type: String,
       required: [true, 'title is required'],
-      trim: true
-    }, 
-   description: {
-    type: String,
-    required: [true, 'description is required'],
-    trim: true
-   } ,
-  ingredients: {
-    type: [ingredientSchema] ,
-    required: [true, 'ingredients is required'],
-    trim: true
-  } ,
-  instructions: {
-    type: String,
-    required: [true, 'instructions is required'],
-  } ,
-  category: {
-    type: String,
-    required: [true, 'category is required'],
-    trim: true
-  } ,
-  prepTime: {
-    type: Number,
-    required: [true, 'prep time is required'],
-    trim: true
-  } ,
-  cookTime: {
-    type: Number,
-    required: [true, 'cook time is required'],
-    trim: true
-  } ,
-  upvotes: {
-    type: Number,
-    default: 0
-  } ,
-  downvotes: {
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: [true, 'description is required'],
+      trim: true,
+    },
+    ingredients: {
+      type: [ingredientSchema],
+      required: [true, 'ingredients is required'],
+      trim: true,
+    },
+    instructions: {
+      type: String,
+      required: [true, 'instructions is required'],
+    },
+
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+      required: [true, 'Category is required'],
+    },
+    image: {
+      type: String,
+      required: [true, 'image is required'],
+      trim: true,
+    },
+    prepTime: {
       type: Number,
-      default: 0
+      required: [true, 'prep time is required'],
+      trim: true,
+    },
+    cookTime: {
+      type: Number,
+      required: [true, 'cook time is required'],
+      trim: true,
+    },
+    upvotes: {
+      type: Number,
+      default: 0,
+    },
+    downvotes: {
+      type: Number,
+      default: 0,
     },
     ratings: {
       type: [Schema.Types.ObjectId],
@@ -77,20 +81,18 @@ const recipeSchema = new Schema<IRecipe>(
       type: [Schema.Types.ObjectId],
       ref: 'User',
     },
-  createdBy: {
-    type: Schema.Types.ObjectId,  // Reference to the User model
-    ref: 'User',
-    required: [true, 'Created by is required']
-  },
+    createdBy: {
+      type: Schema.Types.ObjectId, // Reference to the User model
+      ref: 'User',
+      required: [true, 'Created by is required'],
+    },
     isDeleted: {
       type: Boolean,
       default: false,
     },
   },
-  {timestamps: true}
+  { timestamps: true },
 );
-
-
 
 // query middleware show only where isDelete false
 recipeSchema.pre('find', function (next) {
@@ -108,8 +110,6 @@ recipeSchema.pre('findOne', function (next) {
 recipeSchema.pre('aggregate', function () {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
 });
-
-
 
 // recipe model
 export const Recipe = model<IRecipe>('Recipe', recipeSchema);

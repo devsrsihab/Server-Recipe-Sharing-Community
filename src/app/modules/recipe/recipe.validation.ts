@@ -8,20 +8,21 @@ const ingredientSchema = z.object({
 
 // Recipe Schema
 export const createRecipeSchema = z.object({
-  body: z.object({ 
-  title: z.string().trim().nonempty('Title is required'),
-  description: z.string().trim().nonempty('Description is required'),
-  ingredients: z.array(ingredientSchema).nonempty('At least one ingredient is required'),
-  instructions: z.string().nonempty('Instructions are required'),
-  category: z.string().trim().nonempty('Category is required'),
-  prepTime: z.number().int().positive('Prep time must be a positive integer'),
-  cookTime: z.number().int().positive('Cook time must be a positive integer'),
-
-})});
+  body: z.object({
+    title: z.string().trim().nonempty('Title is required'),
+    description: z.string().trim().nonempty('Description is required'),
+    ingredients: z.array(ingredientSchema).nonempty('At least one ingredient is required'),
+    instructions: z.string().nonempty('Instructions are required'),
+    category: z.string().nonempty('Category is required'),
+    image: z.string().trim().nonempty('Image is required'),
+    prepTime: z.number().int().positive('Prep time must be a positive integer'),
+    cookTime: z.number().int().positive('Cook time must be a positive integer'),
+  }),
+});
 
 // Recipe Update Schema
 export const updateRecipeSchema = z.object({
- body: createRecipeSchema.partial(),
+  body: createRecipeSchema.partial(),
 });
 
 export const RecipeValidation = {
