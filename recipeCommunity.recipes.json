@@ -1,0 +1,429 @@
+[
+  {
+    "_id": {
+      "$oid": "66ff1caf7ffa070226e438f3"
+    },
+    "title": "Spaghetti Carbonara",
+    "description": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.",
+    "ingredients": [
+      {
+        "name": "tok doi",
+        "quantity": "33",
+        "_id": {
+          "$oid": "66ff33977ffa070226e43cb3"
+        }
+      },
+      {
+        "name": "alu",
+        "quantity": "333",
+        "_id": {
+          "$oid": "66ff33977ffa070226e43cb4"
+        }
+      },
+      {
+        "name": "sweet potato",
+        "quantity": "1kg",
+        "_id": {
+          "$oid": "66ff33977ffa070226e43cb5"
+        }
+      }
+    ],
+    "instructions": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hen",
+    "category": {
+      "$oid": "66fe80196d1a8e560a23ac32"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1728000858/cdor4hrf8pevdyts8hvu.webp",
+    "prepTime": 22,
+    "cookTime": 22,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [
+      {
+        "$oid": "6700f7ad658a70734fa0b592"
+      }
+    ],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T22:37:35.699Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-05T08:24:13.405Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff20077ffa070226e4397f"
+    },
+    "title": "Chicken Tikka Masala",
+    "description": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\nsapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.",
+    "ingredients": [],
+    "instructions": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\n",
+    "category": {
+      "$oid": "66fe80196d1a8e560a23ac32"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727995910/k2on1bcusnzylytkgwso.jpg",
+    "prepTime": 12,
+    "cookTime": 33,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [
+      {
+        "$oid": "67010b1d57b527563d0df17a"
+      }
+    ],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T22:51:51.504Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-05T09:47:10.226Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2a5f7ffa070226e439a7"
+    },
+    "title": "Shrimp Scampi",
+    "description": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "ingredients": [
+      {
+        "name": "tok doi",
+        "quantity": "1/2 kg",
+        "_id": {
+          "$oid": "66ff2a5f7ffa070226e439a8"
+        }
+      },
+      {
+        "name": "egg",
+        "quantity": "13",
+        "_id": {
+          "$oid": "66ff2a5f7ffa070226e439a9"
+        }
+      },
+      {
+        "name": "pasta mashala",
+        "quantity": "1 packate",
+        "_id": {
+          "$oid": "66ff2a5f7ffa070226e439aa"
+        }
+      }
+    ],
+    "instructions": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\n",
+    "category": {
+      "$oid": "66fe80036d1a8e560a23ac2e"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727998558/jqlhrwftativxq8v4qrs.webp",
+    "prepTime": 15,
+    "cookTime": 23,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T23:35:59.430Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-05T00:52:44.855Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2c227ffa070226e43a32"
+    },
+    "title": "Vegetarian Pad Thai",
+    "description": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "ingredients": [
+      {
+        "name": "sugar",
+        "quantity": "1/2 table spoon",
+        "_id": {
+          "$oid": "66ff2c227ffa070226e43a33"
+        }
+      },
+      {
+        "name": "egg",
+        "quantity": "4",
+        "_id": {
+          "$oid": "66ff2c227ffa070226e43a34"
+        }
+      },
+      {
+        "name": "noodles",
+        "quantity": "1",
+        "_id": {
+          "$oid": "66ff2c227ffa070226e43a35"
+        }
+      }
+    ],
+    "instructions": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n",
+    "category": {
+      "$oid": "66fe802c6d1a8e560a23ac38"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727999008/hisxzghjx2mvu3yzky3w.webp",
+    "prepTime": 12,
+    "cookTime": 44,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": true,
+    "createdAt": {
+      "$date": "2024-10-03T23:43:30.145Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-05T00:52:54.621Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2d4f7ffa070226e43a47"
+    },
+    "title": "Margherita Pizza",
+    "description": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "ingredients": [
+      {
+        "name": "beef",
+        "quantity": "2kg",
+        "_id": {
+          "$oid": "66ff2d4f7ffa070226e43a48"
+        }
+      },
+      {
+        "name": "mashala",
+        "quantity": "1/2 kg",
+        "_id": {
+          "$oid": "66ff2d4f7ffa070226e43a49"
+        }
+      },
+      {
+        "name": "dhahi",
+        "quantity": "1kg",
+        "_id": {
+          "$oid": "66ff2d4f7ffa070226e43a4a"
+        }
+      }
+    ],
+    "instructions": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "category": {
+      "$oid": "66fe80366d1a8e560a23ac3b"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727999310/emtz9nsbgkewuxz7sw0u.webp",
+    "prepTime": 12,
+    "cookTime": 44,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T23:48:31.428Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-03T23:48:31.428Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2db87ffa070226e43a7e"
+    },
+    "title": "Lemon Garlic Salmon",
+    "description": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "ingredients": [
+      {
+        "name": "Egg",
+        "quantity": "2 box",
+        "_id": {
+          "$oid": "66ff2db87ffa070226e43a7f"
+        }
+      },
+      {
+        "name": "Oil",
+        "quantity": "1/2 Litter",
+        "_id": {
+          "$oid": "66ff2db87ffa070226e43a80"
+        }
+      }
+    ],
+    "instructions": "Etiam magna ipsum, euismod ut sem nec, egestas ultricies turpis. Pellentesque et consectetur sem, vitae sollicitudin diam. Nullam rutrum imperdiet est. Donec lorem metus, iaculis vel dolor vitae, mollis pharetra nisl. Vestibulum urna lacus, interdum non auctor et, hendrerit sit amet lorem. Suspendisse potenti. Sed vel risus tincidunt tortor lacinia ultricies. Nulla id ipsum in sapien cursus iaculis. Proin ultricies laoreet sapien, id lacinia nunc hendrerit vitae. Donec congue vel dui varius blandit. Curabitur eget consequat velit, tristique rhoncus lacus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae sodales enim. In massa velit, faucibus a est dapibus, maximus lacinia enim. Maecenas maximus lacinia ex, vitae ornare felis vestibulum ac. Duis interdum eu ligula id tempor. Nam est lectus, condimentum et arcu vitae, fermentum ultricies ipsum. Suspendisse auctor dolor eu purus congue, quis egestas mauris volutpat. Nullam sodales lorem a purus convallis aliquet.",
+    "category": {
+      "$oid": "66fe7fed6d1a8e560a23ac28"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727999415/dtmjqzqs9q6tnp671z0s.webp",
+    "prepTime": 11,
+    "cookTime": 33,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T23:50:16.801Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-03T23:50:16.801Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "published"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2e097ffa070226e43a97"
+    },
+    "title": "Butternut Squash Soup",
+    "description": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\nSed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.",
+    "ingredients": [
+      {
+        "name": "tok doi",
+        "quantity": "12",
+        "_id": {
+          "$oid": "66ff2e097ffa070226e43a98"
+        }
+      },
+      {
+        "name": "begitable",
+        "quantity": "5kg",
+        "_id": {
+          "$oid": "66ff2e097ffa070226e43a99"
+        }
+      },
+      {
+        "name": "jira",
+        "quantity": "1 cup",
+        "_id": {
+          "$oid": "66ff2e097ffa070226e43a9a"
+        }
+      }
+    ],
+    "instructions": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\n",
+    "category": {
+      "$oid": "66fe80366d1a8e560a23ac3b"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727999495/mepb5uj8xyig5apqq3rw.webp",
+    "prepTime": 12,
+    "cookTime": 33,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T23:51:37.221Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-03T23:51:37.221Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "pending"
+  },
+  {
+    "_id": {
+      "$oid": "66ff2e4b7ffa070226e43ab4"
+    },
+    "title": "Grilled Chicken Caesar Salad",
+    "description": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\nSed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.",
+    "ingredients": [
+      {
+        "name": "dim",
+        "quantity": "12",
+        "_id": {
+          "$oid": "66ff2e4b7ffa070226e43ab5"
+        }
+      },
+      {
+        "name": "hilsha",
+        "quantity": "1",
+        "_id": {
+          "$oid": "66ff2e4b7ffa070226e43ab6"
+        }
+      },
+      {
+        "name": "rice",
+        "quantity": "1 packate",
+        "_id": {
+          "$oid": "66ff2e4b7ffa070226e43ab7"
+        }
+      }
+    ],
+    "instructions": "Sed hendrerit lacus vitae enim laoreet pellentesque. Quisque dapibus mattis velit, vitae commodo magna cursus nec. Cras accumsan lobortis diam, fringilla pulvinar augue blandit id. Pellentesque tempus placerat laoreet. Sed hendrerit ultricies fermentum. Integer eleifend massa vitae massa porta accumsan. Vivamus eu ullamcorper turpis. Etiam non arcu nisl. Maecenas a orci sit amet risus feugiat blandit. Praesent odio sapien, ultricies vitae lobortis at, efficitur in orci. Duis dignissim leo lacus, ut fermentum tellus fermentum id. Curabitur suscipit laoreet mi sed rhoncus.\n\n",
+    "category": {
+      "$oid": "66fe7f626d1a8e560a23ac19"
+    },
+    "image": "https://res.cloudinary.com/dzkmp0xxd/image/upload/v1727999561/q1dlw25jyha49ro9xzhi.webp",
+    "prepTime": 12,
+    "cookTime": 22,
+    "upvotes": 0,
+    "downvotes": 0,
+    "ratings": [],
+    "comments": [],
+    "upvotedBy": [],
+    "downvotedBy": [],
+    "createdBy": {
+      "$oid": "66f8ff95fe665305d78d3165"
+    },
+    "isDeleted": false,
+    "createdAt": {
+      "$date": "2024-10-03T23:52:43.183Z"
+    },
+    "updatedAt": {
+      "$date": "2024-10-03T23:52:43.183Z"
+    },
+    "__v": 0,
+    "isPaid": false,
+    "status": "pending"
+  }
+]

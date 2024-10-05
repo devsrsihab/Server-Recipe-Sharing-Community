@@ -21,5 +21,7 @@ export interface IRecipe {
   upvotedBy: Types.ObjectId[];
   downvotedBy: Types.ObjectId[];
   createdBy: Types.ObjectId;
+  isPaid: boolean;
+  status: string;
   isDeleted: boolean;
 }

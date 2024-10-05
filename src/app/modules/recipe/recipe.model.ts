@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { IIngredient, IRecipe } from './recipe.interface';
+import { recipeStatus } from './recipe.constant';
 
 // username schema
 const ingredientSchema = new Schema<IIngredient>({
@@ -85,6 +86,15 @@ const recipeSchema = new Schema<IRecipe>(
       type: Schema.Types.ObjectId, // Reference to the User model
       ref: 'User',
       required: [true, 'Created by is required'],
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: recipeStatus,
+      default: 'pending',
     },
     isDeleted: {
       type: Boolean,

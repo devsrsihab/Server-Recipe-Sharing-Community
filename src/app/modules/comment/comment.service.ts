@@ -80,9 +80,16 @@ const getCommentFromDB = async (recipeId: string) => {
   return comment;
 };
 
+// delete comment
+const deleteCommentFromDB = async (id: string) => {
+  const comment = await Comment.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+  return comment;
+};
+
 export const RecipeServices = {
   makeCommentToDB,
   getAllCommentsFromDB,
   getCommentFromDB,
   updateCommentStatus,
+  deleteCommentFromDB,
 };
