@@ -8,58 +8,35 @@ import { UserValidations } from './user.validation';
 
 const router = express.Router();
 
-
 // create user
 router.post(
-  '/admin-create-user',
+  '/admin-user',
   auth(USER_ROLE.admin),
   validateRequest(UserValidations.createUserValidationSchema),
   UserController.createUser,
 );
 
 // admin all user preview
-router.get(
-  '/admin-all-user',
-  auth(USER_ROLE.admin),
-  UserController.adminAllUser,
-);
+router.get('/admin-user', auth(USER_ROLE.admin), UserController.adminAllUser);
 
 // admin update user
 router.put(
-  '/admin-update-user/:userId',
+  '/admin-user/:id',
   auth(USER_ROLE.admin),
   validateRequest(UserValidations.adminUpdateUserValidationSchema),
   UserController.adminUpdateUser,
 );
 
 // admin single preview user
-router.get(
-  '/admin-details-user/:userId',
-  auth(USER_ROLE.admin),
-  UserController.adminDetailsUser,
-);
+router.get('/admin-user/:id', auth(USER_ROLE.admin), UserController.adminDetailsUser);
 
 // admin delete user
-router.delete(
-  '/admin-delete-user/:userId',
-  auth(USER_ROLE.admin),
-  UserController.adminDeleteUser,
-);
+router.delete('/admin-user/:id', auth(USER_ROLE.admin), UserController.adminDeleteUser);
 
+// user profile get
+router.get('/profile', auth(USER_ROLE.admin, USER_ROLE.user), UserController.userProfile);
 
-
-
-
-
-// user profile get 
-router.get(
-  '/profile',
-  auth(USER_ROLE.admin, USER_ROLE.user),
-  UserController.userProfile,
-);
-
-
-// user profile update 
+// user profile update
 router.put(
   '/profile',
   auth(USER_ROLE.admin, USER_ROLE.user),
@@ -84,18 +61,10 @@ router.patch(
 );
 
 // get user followers
-router.get(
-  '/followers',
-  auth(USER_ROLE.admin, USER_ROLE.user),
-  UserController.getUserFollowers,
-);
+router.get('/followers', auth(USER_ROLE.admin, USER_ROLE.user), UserController.getUserFollowers);
 
-// get user following 
-router.get(
-  '/following',
-  auth(USER_ROLE.admin, USER_ROLE.user),
-  UserController.getUserFollowing,
-);
+// get user following
+router.get('/following', auth(USER_ROLE.admin, USER_ROLE.user), UserController.getUserFollowing);
 
 // change status
 router.patch(

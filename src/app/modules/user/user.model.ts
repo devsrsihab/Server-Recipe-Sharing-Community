@@ -10,7 +10,7 @@ const nameSchema = new Schema<IName>({
   lastName: { type: String, required: true },
 });
 
-const defaultAvater = "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5.jpg?s=250"
+const defaultAvater = 'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5.jpg?s=250';
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -38,59 +38,58 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     profilePicture: {
       type: String,
-      required: false, 
+      required: false,
       default: defaultAvater,
     },
     bio: {
       type: String,
-      default: "",  // Optional with default value
+      default: '', // Optional with default value
     },
     followers: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
-      }
+      },
     ],
     following: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
-      }
+      },
     ],
     isPremium: {
       type: Boolean,
-      default: false,  // Default to non-premium
+      default: false, // Default to non-premium
     },
     premiumExpiry: {
       type: Date,
     },
     needPasswordChange: {
       type: Boolean,
-      default: true, 
+      default: true,
     },
     passwordChangedAt: {
       type: Date,
     },
     role: {
       type: String,
-      enum: ['admin', 'user'],  
+      enum: ['admin', 'user'],
     },
     status: {
       type: String,
       enum: USER_STATUS,
-      default: 'active',  // Default to 'pending' status after registration
+      default: 'active', // Default to 'pending' status after registration
       required: true,
     },
     isDeleted: {
       type: Boolean,
-      default: false, 
+      default: false,
     },
   },
   {
-    timestamps: true, 
-  }
+    timestamps: true,
+  },
 );
-
 
 // pre middleware / hook: we will work ot it create() save()
 userSchema.pre('save', async function (next) {
@@ -102,6 +101,22 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// query middleware show only where isDelete false
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// query middlware for findone
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// aggregate middleware
+userSchema.pre('aggregate', function () {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+});
 
 // post middleware / hook: we will work ot it create() save()
 userSchema.post('save', function (doc, next) {
@@ -114,7 +129,6 @@ userSchema.statics.isUserExistByEmail = async function (email: string) {
   return await User.findOne({ email }).select('+password');
 };
 
-
 // user exist cusotm static method
 userSchema.statics.isPasswordMatch = async function (
   plainTextPassword: string,
@@ -122,7 +136,6 @@ userSchema.statics.isPasswordMatch = async function (
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
-
 
 // check is the jwt token issued before password changed
 userSchema.statics.isJWTIssuedBeforePasswordChanged = async function (

@@ -7,7 +7,13 @@ import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
 import { TUser } from './user.interface';
 import { User } from './user.model';
-import { generatAdminId, generateStuentId, generateUsername, generatFacultyId, generatUserId } from './user.utils';
+import {
+  generatAdminId,
+  generateStuentId,
+  generateUsername,
+  generatFacultyId,
+  generatUserId,
+} from './user.utils';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
@@ -17,6 +23,7 @@ import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { JwtPayload } from 'jsonwebtoken';
 
 // create student
 const createStudentToDB = async (file: any, password: string, payload: TStudent) => {
@@ -190,44 +197,41 @@ const createAdminToDB = async (password: string, payload: TAdmin) => {
   }
 };
 
-
-// create user 
+// create user
 const createUserToDB = async (payload: TUser) => {
-
-  // if the role admin 
-  if(payload.role === 'admin'){
+  // if the role admin
+  if (payload.role === 'admin') {
     // generate a unique id
-    payload.id = await generatAdminId() || '';
-  }else {
+    payload.id = (await generatAdminId()) || '';
+  } else {
     // generate a unique id
-    payload.id = await generatUserId() || '';
+    payload.id = (await generatUserId()) || '';
   }
-  
-   // generate username
+
+  // generate username
   payload.username = await generateUsername(payload.name);
   const user = await User.create(payload);
   return user;
 };
 
-// admin all user preview 
-const adminAllUserFromDB = async ( query: Record<string, unknown>) => {
-
+// admin all user preview
+const adminAllUserFromDB = async (email: string, query: Record<string, unknown>) => {
   // query builder
-  const recipeQuery = new QueryBuilder(User.find(), query)
-                      .filter()
-                      .sort()
-                      .paginate()
-                      .fields();
+  const allUserQuery = new QueryBuilder(User.find({ email: { $ne: email } }), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  const result = await recipeQuery.modelQuery;
-  const meta = await recipeQuery.countTotal();
+  const result = await allUserQuery.modelQuery;
+  const meta = await allUserQuery.countTotal();
   return {
     meta,
     result,
   };
 };
 
-// update user 
+// update user
 const adminUpdateUserToDB = async (id: string, payload: TUser) => {
   const { name, ...remainingUserData } = payload;
 
@@ -244,7 +248,7 @@ const adminUpdateUserToDB = async (id: string, payload: TUser) => {
   return result;
 };
 
-// admin single preview user 
+// admin single preview user
 const adminDetailsUser = async (id: string) => {
   const result = await User.findById(id);
   return result;
@@ -255,8 +259,6 @@ const adminDeleteUserToDB = async (id: string) => {
   const result = await User.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
   return result;
 };
-
-
 
 // get user profile
 const getUserProfileFromDB = async (email: string, role: string) => {
@@ -275,7 +277,7 @@ const getUserProfileFromDB = async (email: string, role: string) => {
   return result;
 };
 
-// update user data 
+// update user data
 const updateUserToDB = async (email: string, payload: Partial<TUser>) => {
   const { name, ...remainingUserData } = payload;
 
@@ -289,7 +291,7 @@ const updateUserToDB = async (email: string, payload: Partial<TUser>) => {
   }
   console.log(payload);
 
-  const result = await User.findOneAndUpdate({email}, modifiedUpdatedData, { new: true });
+  const result = await User.findOneAndUpdate({ email }, modifiedUpdatedData, { new: true });
   return result;
 };
 
@@ -320,14 +322,14 @@ const userFollowToDB = async (email: string, payload: { id: string }) => {
     await User.findOneAndUpdate(
       { _id: user._id },
       { $addToSet: { following: followingUser._id.toString() } },
-      { session }
+      { session },
     );
 
     // Update the followers array of the target user
     await User.findOneAndUpdate(
       { _id: followingUser._id },
       { $addToSet: { followers: user._id.toString() } },
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -367,14 +369,14 @@ const userUnfollowToDB = async (email: string, payload: { id: string }) => {
     await User.findOneAndUpdate(
       { _id: user._id },
       { $pull: { following: unfollowingUser._id.toString() } },
-      { session }
+      { session },
     );
 
     // Update the followers array of the target user
     await User.findOneAndUpdate(
       { _id: unfollowingUser._id },
       { $pull: { followers: user._id.toString() } },
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -399,14 +401,13 @@ const getUserFollowingFromDB = async (email: string) => {
   return user?.following;
 };
 
-
 // change status
 const changeStatus = async (id: string, payload: { status: string }) => {
   const result = await User.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
 
-// change user role 
+// change user role
 const changeUserRole = async (id: string, payload: { role: string }) => {
   const result = await User.findByIdAndUpdate(id, payload, { new: true });
   return result;
@@ -417,7 +418,7 @@ export const UserServices = {
   createFacultyToDB,
   createAdminToDB,
   changeStatus,
-  getUserProfileFromDB, 
+  getUserProfileFromDB,
   updateUserToDB,
   userFollowToDB,
   userUnfollowToDB,
@@ -425,8 +426,8 @@ export const UserServices = {
   getUserFollowingFromDB,
   changeUserRole,
   adminUpdateUserToDB,
-  createUserToDB, 
+  createUserToDB,
   adminDetailsUser,
   adminAllUserFromDB,
-  adminDeleteUserToDB
+  adminDeleteUserToDB,
 };

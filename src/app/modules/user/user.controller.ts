@@ -51,10 +51,11 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
-// admin all user preview 
+// admin all user preview
 const adminAllUser = catchAsync(async (req, res) => {
+  const { email } = req.user;
   const query = req.query;
-  const result = await UserServices.adminAllUserFromDB(query);
+  const result = await UserServices.adminAllUserFromDB(email, query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -66,21 +67,21 @@ const adminAllUser = catchAsync(async (req, res) => {
 
 // admin update user
 const adminUpdateUser = catchAsync(async (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.params;
   const userData = req.body;
-  const result = await UserServices.adminUpdateUserToDB(userId, userData);
+  const result = await UserServices.adminUpdateUserToDB(id, userData);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User updated successfully', 
+    message: 'User updated successfully',
     data: result,
   });
 });
 
 // admin single preview user
 const adminDetailsUser = catchAsync(async (req, res) => {
-  const { userId } = req.params;
-  const result = await UserServices.adminDetailsUser(userId);
+  const { id } = req.params;
+  const result = await UserServices.adminDetailsUser(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -91,8 +92,8 @@ const adminDetailsUser = catchAsync(async (req, res) => {
 
 // admin delete user
 const adminDeleteUser = catchAsync(async (req, res) => {
-  const { userId } = req.params;
-  const result = await UserServices.adminDeleteUserToDB(userId);
+  const { id } = req.params;
+  const result = await UserServices.adminDeleteUserToDB(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -137,7 +138,7 @@ const userFollow = catchAsync(async (req, res) => {
     success: true,
     message: 'User follow successfully',
     data: result,
-  }); 
+  });
 });
 
 // user unfollow
@@ -221,5 +222,5 @@ export const UserController = {
   createUser,
   adminDetailsUser,
   adminAllUser,
-  adminDeleteUser
+  adminDeleteUser,
 };
