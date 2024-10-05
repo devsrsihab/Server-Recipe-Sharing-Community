@@ -4,10 +4,7 @@ export const USER_ROLE = {
   faculty: 'faculty',
   student: 'student',
   superAdmin: 'super-admin',
-
-
 } as const;
 
 // user status
-export const USER_STATUS = ['active', 'pending', 'suspended', 'premium', 'expired-premium', 'blocked'];
-
+export const USER_STATUS = ['active', 'pending', 'blocked'];

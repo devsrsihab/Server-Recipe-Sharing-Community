@@ -40,7 +40,7 @@ router.get('/profile', auth(USER_ROLE.admin, USER_ROLE.user), UserController.use
 router.put(
   '/profile',
   auth(USER_ROLE.admin, USER_ROLE.user),
-  validateRequest(UserValidations.updateUserValidationSchema),
+  validateRequest(UserValidations.adminUpdateUserValidationSchema),
   UserController.updateUser,
 );
 

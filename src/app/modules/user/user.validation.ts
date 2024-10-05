@@ -1,36 +1,38 @@
 import { z } from 'zod';
 import { USER_ROLE, USER_STATUS } from './user.constant';
 
-
 // name validation
 const nameValidation = z.object({
-  firstName: z.string().nonempty({ message: "First name is required" }),
-  lastName: z.string().nonempty({ message: "Last name is required" }),
+  firstName: z.string().nonempty({ message: 'First name is required' }),
+  lastName: z.string().nonempty({ message: 'Last name is required' }),
 });
 
 //user validation
 const UserSchemaValidation = z.object({
   body: z.object({
-    email: z.string().email({ message: "Invalid email address" }).trim(),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }).trim(),
+    email: z.string().email({ message: 'Invalid email address' }).trim(),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }).trim(),
     name: nameValidation,
   }),
 });
 
-
 //create user validation
 const createUserValidationSchema = z.object({
   body: z.object({
-    email: z.string().email({ message: "Invalid email address" }).trim(),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }).trim(),
-    role: z.enum(Object.values(USER_ROLE) as [string, ...string[]]),
     name: nameValidation,
+    email: z.string().email({ message: 'Invalid email address' }).trim(),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }).trim(),
+    role: z.enum(Object.values(USER_ROLE) as [string, ...string[]]),
   }),
 });
 
 // admin update user validation
 const adminUpdateUserValidationSchema = z.object({
-  body: createUserValidationSchema.partial(),
+  body: z.object({
+    name: nameValidation,
+    email: z.string().email({ message: 'Invalid email address' }).trim(),
+    role: z.enum(Object.values(USER_ROLE) as [string, ...string[]]),
+  }),
 });
 
 // update user validation
@@ -41,14 +43,14 @@ const updateUserValidationSchema = z.object({
 // user follow validation
 const userFollowValidationSchema = z.object({
   body: z.object({
-    id: z.string().nonempty({ message: "User ID is required" }),
+    id: z.string().nonempty({ message: 'User ID is required' }),
   }),
 });
 
 // change status validation
 const changeStatusValidationSchema = z.object({
   body: z.object({
-    status: z.enum([...USER_STATUS] as [string , ...string[]]),
+    status: z.enum([...USER_STATUS] as [string, ...string[]]),
   }),
 });
 
@@ -59,13 +61,12 @@ const changeUserRoleValidationSchema = z.object({
   }),
 });
 
-export const UserValidations = { 
+export const UserValidations = {
   createUserValidationSchema,
   userFollowValidationSchema,
   updateUserValidationSchema,
   UserSchemaValidation,
   changeStatusValidationSchema,
   changeUserRoleValidationSchema,
-  adminUpdateUserValidationSchema, 
+  adminUpdateUserValidationSchema,
 };
-

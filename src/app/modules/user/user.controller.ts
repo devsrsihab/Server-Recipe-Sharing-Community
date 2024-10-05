@@ -69,6 +69,7 @@ const adminAllUser = catchAsync(async (req, res) => {
 const adminUpdateUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   const userData = req.body;
+
   const result = await UserServices.adminUpdateUserToDB(id, userData);
   sendResponse(res, {
     statusCode: httpStatus.OK,

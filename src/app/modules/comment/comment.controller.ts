@@ -17,6 +17,30 @@ const makeComment = catchAsync(async (req, res) => {
   });
 });
 
+// get all comments
+const getAllComments = catchAsync(async (req, res) => {
+  const result = await RecipeServices.getAllCommentsFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Comments fetched successfully',
+    data: result,
+  });
+});
+
+// update comment status
+const updateCommentStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const result = await RecipeServices.updateCommentStatus(id, status);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Comment status updated successfully',
+    data: result,
+  });
+});
+
 // get all rating based on recipe id
 const getComment = catchAsync(async (req, res) => {
   const { recipeId } = req.params;
@@ -25,13 +49,13 @@ const getComment = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Comment fetched successfully',
-    data: result.length > 0 ? result : "Recipe have no comment yet",
+    data: result.length > 0 ? result : 'Recipe have no comment yet',
   });
 });
-
-
 
 export const CommentController = {
   makeComment,
   getComment,
+  getAllComments,
+  updateCommentStatus,
 };
