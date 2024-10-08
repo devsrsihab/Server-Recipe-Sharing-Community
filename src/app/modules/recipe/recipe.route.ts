@@ -6,9 +6,12 @@ import { USER_ROLE } from '../user/user.constant';
 const router = express.Router();
 
 router.post('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.createRecipe);
+// get all recipe base user
 router.get('/', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getAllRecipes);
+// recipe feeds
+router.get('/feeds', RecipeController.getRecipeFeeds);
 
-router.get('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.getSingleRecipe);
+router.get('/:id', RecipeController.getSingleRecipe);
 router.put('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.updateRecipe);
 router.delete('/:id', auth(USER_ROLE.user, USER_ROLE.admin), RecipeController.deleteRecipe);
 

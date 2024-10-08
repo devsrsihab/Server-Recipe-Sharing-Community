@@ -116,6 +116,20 @@ const getUserRecipes = catchAsync(async (req, res) => {
   });
 });
 
+// get recipe feeds controller
+const getRecipeFeeds = catchAsync(async (req, res) => {
+  const query = req.query;
+  const result = await RecipeServices.getRecipeFeedsFromDB(query);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'recipe feeds get successfully',
+    data: result.result,
+    meta: result.meta,
+  });
+});
+
 export const RecipeController = {
   getAllRecipes,
   createRecipe,
@@ -125,4 +139,5 @@ export const RecipeController = {
   upvoteRecipe,
   downvoteRecipe,
   getUserRecipes,
+  getRecipeFeeds,
 };

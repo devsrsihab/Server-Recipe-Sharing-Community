@@ -180,6 +180,22 @@ const getUserRecipesFromDB = async (id: string, query: Record<string, unknown>) 
   };
 };
 
+// get recipe feeds
+const getRecipeFeedsFromDB = async (query: Record<string, unknown>) => {
+  // ge
+  // accending the which is big upvoted
+  const baseQuery = Recipe.find().populate('createdBy').populate('category').sort({ upvotes: -1 });
+  const recipeQuery = new QueryBuilder(baseQuery, query).filter().sort().paginate().fields();
+
+  const result = await recipeQuery.modelQuery;
+  const meta = await recipeQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
+
 export const RecipeServices = {
   getAllRecipesFromDB,
   createRecipe,
@@ -189,4 +205,5 @@ export const RecipeServices = {
   upvoteRecipe,
   downvoteRecipe,
   getUserRecipesFromDB,
+  getRecipeFeedsFromDB,
 };
