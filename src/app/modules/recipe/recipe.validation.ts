@@ -14,7 +14,7 @@ export const createRecipeSchema = z.object({
     ingredients: z.array(ingredientSchema).nonempty('At least one ingredient is required'),
     instructions: z.string().nonempty('Instructions are required'),
     category: z.string().nonempty('Category is required'),
-    image: z.string().trim().nonempty('Image is required'),
+    image: z.string().trim().nonempty('Image is required').optional(),
     prepTime: z.number().int().positive('Prep time must be a positive integer'),
     cookTime: z.number().int().positive('Cook time must be a positive integer'),
   }),

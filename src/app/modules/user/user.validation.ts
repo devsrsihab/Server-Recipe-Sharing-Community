@@ -29,9 +29,10 @@ const createUserValidationSchema = z.object({
 // admin update user validation
 const adminUpdateUserValidationSchema = z.object({
   body: z.object({
-    name: nameValidation,
-    email: z.string().email({ message: 'Invalid email address' }).trim(),
-    role: z.enum(Object.values(USER_ROLE) as [string, ...string[]]),
+    name: nameValidation.optional(),
+    email: z.string().email({ message: 'Invalid email address' }).trim().optional(),
+    role: z.enum(Object.values(USER_ROLE) as [string, ...string[]]).optional(),
+    profilePicture: z.string().optional(),
   }),
 });
 

@@ -45,8 +45,7 @@ const recipeSchema = new Schema<IRecipe>(
     },
     image: {
       type: String,
-      required: [true, 'image is required'],
-      trim: true,
+      default: 'https://placehold.co/600x400/png',
     },
     prepTime: {
       type: Number,

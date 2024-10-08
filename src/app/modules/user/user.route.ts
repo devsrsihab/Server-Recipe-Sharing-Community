@@ -34,7 +34,7 @@ router.get('/admin-user/:id', auth(USER_ROLE.admin), UserController.adminDetails
 router.delete('/admin-user/:id', auth(USER_ROLE.admin), UserController.adminDeleteUser);
 
 // user profile get
-router.get('/profile', auth(USER_ROLE.admin, USER_ROLE.user), UserController.userProfile);
+router.get('/profile/:id', auth(USER_ROLE.admin, USER_ROLE.user), UserController.userProfile);
 
 // user profile update
 router.put(

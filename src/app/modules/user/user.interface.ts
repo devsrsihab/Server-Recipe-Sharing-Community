@@ -8,24 +8,24 @@ export interface IName {
 }
 
 export interface TUser {
+  _id?: string;
   id: string;
   name: IName;
   email: string;
   password: string;
-  username: string;   
-  profilePicture?: string;      
-  bio?: string;                 
-  followers: string[];        
-  following: string[]; 
-  isPremium: boolean;           
-  premiumExpiry?: Date; 
+  username: string;
+  profilePicture?: string;
+  bio?: string;
+  followers: string[];
+  following: string[];
+  isPremium: boolean;
+  premiumExpiry?: Date;
   needPasswordChange: boolean;
   passwordChangedAt?: Date;
   status: string;
-  role: 'admin' | 'user' ;
+  role: 'admin' | 'user';
   isDeleted: boolean;
 }
-
 
 export interface UserModel extends Model<TUser> {
   isUserExistByEmail(id: string): Promise<TUser>;

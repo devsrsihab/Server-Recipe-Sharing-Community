@@ -3,42 +3,6 @@ import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
-// student create controller
-const createStudent = catchAsync(async (req, res) => {
-  const { password, student: studetnData } = req.body;
-  const result = await UserServices.createStudentToDB(req.file, password, studetnData);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'student created successfully',
-    data: result,
-  });
-});
-
-// create faculty controller
-const createFaculty = catchAsync(async (req, res) => {
-  const { password, faculty: studetnData } = req.body;
-  const result = await UserServices.createFacultyToDB(password, studetnData);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Faculty created successfully',
-    data: result,
-  });
-});
-
-// create faculty controller
-const createAdmin = catchAsync(async (req, res) => {
-  const { password, admin: studetnData } = req.body;
-  const result = await UserServices.createAdminToDB(password, studetnData);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Admin created successfully',
-    data: result,
-  });
-});
-
 // create user
 const createUser = catchAsync(async (req, res) => {
   const userData = req.body;
@@ -105,9 +69,8 @@ const adminDeleteUser = catchAsync(async (req, res) => {
 
 // get user profile
 const userProfile = catchAsync(async (req, res) => {
-  const { email, role } = req.user;
-
-  const result = await UserServices.getUserProfileFromDB(email, role);
+  const { id } = req.params;
+  const result = await UserServices.getUserProfileFromDB(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -118,6 +81,7 @@ const userProfile = catchAsync(async (req, res) => {
 
 // get user profile
 const updateUser = catchAsync(async (req, res) => {
+  console.log(req.body);
   const { email } = req.user;
 
   const result = await UserServices.updateUserToDB(email, req.body);
@@ -208,9 +172,6 @@ const changeUserRole = catchAsync(async (req, res) => {
 });
 
 export const UserController = {
-  createStudent,
-  createFaculty,
-  createAdmin,
   changeStatus,
   userProfile,
   updateUser,

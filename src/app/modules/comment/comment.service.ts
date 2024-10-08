@@ -5,9 +5,13 @@ import { Comment } from './comment.model';
 import { JwtPayload } from 'jsonwebtoken';
 import { Recipe } from '../recipe/recipe.model';
 import mongoose from 'mongoose';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // create recipe
-const makeCommentToDB = async (email: JwtPayload, payload: { recipeId: string; text: string }) => {
+const makeCommentToDB = async (
+  email: JwtPayload,
+  payload: { recipeId: string; comment: string },
+) => {
   const user = await User.findOne({ email }).select('_id email');
 
   if (!user) {
@@ -28,7 +32,7 @@ const makeCommentToDB = async (email: JwtPayload, payload: { recipeId: string; t
     session.startTransaction();
     // create a rating transaction 01
     const newComment = await Comment.create(
-      [{ user: user?._id, recipe: payload.recipeId, text: payload.text }],
+      [{ user: user?._id, recipe: payload.recipeId, comment: payload.comment }],
       { session },
     ); // transaction return array
 
@@ -63,9 +67,20 @@ const makeCommentToDB = async (email: JwtPayload, payload: { recipeId: string; t
 };
 
 // get all comments
-const getAllCommentsFromDB = async () => {
-  const comments = await Comment.find().populate('user').populate('recipe');
-  return comments;
+const getAllCommentsFromDB = async (query: Record<string, unknown>) => {
+  const commentQuery = new QueryBuilder(Comment.find().populate('user'), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await commentQuery.modelQuery;
+  const meta = await commentQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 // update comment status
@@ -75,9 +90,20 @@ const updateCommentStatus = async (id: string, status: string) => {
 };
 
 // get all comment by id
-const getCommentFromDB = async (recipeId: string) => {
-  const comment = await Comment.find({ recipe: recipeId }).populate('user');
-  return comment;
+const getCommentBasedOnRecipeFromDB = async (recipeId: string, query: Record<string, unknown>) => {
+  const commentQuery = new QueryBuilder(Comment.find({ recipe: recipeId }).populate('user'), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await commentQuery.modelQuery;
+  const meta = await commentQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 // delete comment
@@ -89,7 +115,7 @@ const deleteCommentFromDB = async (id: string) => {
 export const RecipeServices = {
   makeCommentToDB,
   getAllCommentsFromDB,
-  getCommentFromDB,
+  getCommentBasedOnRecipeFromDB,
   updateCommentStatus,
   deleteCommentFromDB,
 };

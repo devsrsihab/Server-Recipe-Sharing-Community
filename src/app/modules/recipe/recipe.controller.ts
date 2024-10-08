@@ -101,6 +101,21 @@ const deleteRecipe = catchAsync(async (req, res) => {
   });
 });
 
+// get user recipes controller
+const getUserRecipes = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const query = req.query;
+  const result = await RecipeServices.getUserRecipesFromDB(id, query);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'user recipes get successfully',
+    data: result.result,
+    meta: result.meta,
+  });
+});
+
 export const RecipeController = {
   getAllRecipes,
   createRecipe,
@@ -109,4 +124,5 @@ export const RecipeController = {
   deleteRecipe,
   upvoteRecipe,
   downvoteRecipe,
+  getUserRecipes,
 };

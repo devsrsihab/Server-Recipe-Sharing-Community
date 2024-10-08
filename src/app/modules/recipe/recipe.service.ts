@@ -15,6 +15,10 @@ const createRecipe = async (email: string, payload: IRecipe) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
 
+  if (!payload.image) {
+    payload.image = 'https://placehold.co/600x400/png';
+  }
+
   const result = await Recipe.create({ ...payload, createdBy: user?._id });
   return result;
 };
@@ -94,7 +98,7 @@ const upvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
     {
       $push: { upvotedBy: user?._id },
       $pull: { downvotedBy: user?._id },
-      $inc: { upvotes: 1, downvotes: -1 },
+      $inc: { upvotes: 1, downvotes: recipe.downvotes !== 0 ? -1 : 0 },
     },
     { new: true },
   );
@@ -105,7 +109,6 @@ const upvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
 // downvote recipe
 const downvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
   const user = await User.findOne({ email: userData.email }).select('_id email');
-
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User not found');
   }
@@ -130,7 +133,7 @@ const downvoteRecipe = async (userData: JwtPayload, recipeId: string) => {
     {
       $push: { downvotedBy: user?._id },
       $pull: { upvotedBy: user?._id },
-      $inc: { downvotes: 1, upvotes: -1 },
+      $inc: { downvotes: 1, upvotes: recipe.upvotes !== 0 ? -1 : 0 },
     },
     { new: true },
   );
@@ -162,6 +165,21 @@ const deleteRecipeFromDB = async (userData: JwtPayload, id: string) => {
   return result;
 };
 
+// user recipes
+const getUserRecipesFromDB = async (id: string, query: Record<string, unknown>) => {
+  const baseQuery = Recipe.find({ createdBy: id }).populate('createdBy').populate('category');
+
+  const recipeQuery = new QueryBuilder(baseQuery, query).filter().sort().paginate().fields();
+
+  const result = await recipeQuery.modelQuery;
+  const meta = await recipeQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
+
 export const RecipeServices = {
   getAllRecipesFromDB,
   createRecipe,
@@ -170,4 +188,5 @@ export const RecipeServices = {
   deleteRecipeFromDB,
   upvoteRecipe,
   downvoteRecipe,
+  getUserRecipesFromDB,
 };

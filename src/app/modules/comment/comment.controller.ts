@@ -8,6 +8,7 @@ import catchAsync from '../../utils/catchAsync';
 const makeComment = catchAsync(async (req, res) => {
   const { email } = req.user;
   const payload = req.body;
+
   const result = await RecipeServices.makeCommentToDB(email, payload);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -19,12 +20,15 @@ const makeComment = catchAsync(async (req, res) => {
 
 // get all comments
 const getAllComments = catchAsync(async (req, res) => {
-  const result = await RecipeServices.getAllCommentsFromDB();
+  const query = req.query;
+
+  const result = await RecipeServices.getAllCommentsFromDB(query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Comments fetched successfully',
-    data: result,
+    meta: result.meta,
+    data: result.result,
   });
 });
 
@@ -41,15 +45,19 @@ const updateCommentStatus = catchAsync(async (req, res) => {
   });
 });
 
-// get all rating based on recipe id
-const getComment = catchAsync(async (req, res) => {
+// get all comments based on recipe id
+const getCommentBasedOnRecipe = catchAsync(async (req, res) => {
   const { recipeId } = req.params;
-  const result = await RecipeServices.getCommentFromDB(recipeId);
+  const query = req.query;
+
+  const { meta, result } = await RecipeServices.getCommentBasedOnRecipeFromDB(recipeId, query);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Comment fetched successfully',
-    data: result.length > 0 ? result : 'Recipe have no comment yet',
+    message: 'Comments fetched successfully',
+    meta,
+    data: result,
   });
 });
 
@@ -67,7 +75,7 @@ const deleteComment = catchAsync(async (req, res) => {
 
 export const CommentController = {
   makeComment,
-  getComment,
+  getCommentBasedOnRecipe,
   getAllComments,
   updateCommentStatus,
   deleteComment,

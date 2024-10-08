@@ -53,8 +53,11 @@ const loginUser = async (payload: TLoginUser) => {
 
   // jwt token
   const jwtPayload = {
+    _id: user?._id,
     email: user?.email,
     role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture,
   };
 
   const srsRecipeAccessToken = createToken(
@@ -165,8 +168,11 @@ const refreshToken = async (token: string) => {
 
   // jwt token
   const jwtPayload = {
+    _id: user?._id,
     email: user?.email,
     role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture,
   };
 
   const srsRecipeAccessToken = createToken(
@@ -204,8 +210,11 @@ const forgetPassword = async (email: string) => {
 
   // jwt token
   const jwtPayload = {
+    _id: user?._id,
     email: user?.email,
     role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture,
   };
 
   const srsRecipeAccessToken = createToken(jwtPayload, config.jwt_access_secret as string, '10m');
