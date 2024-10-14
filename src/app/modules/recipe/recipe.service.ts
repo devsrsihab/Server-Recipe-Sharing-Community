@@ -16,7 +16,7 @@ const createRecipe = async (email: string, payload: IRecipe) => {
   }
 
   if (!payload.image) {
-    payload.image = 'https://placehold.co/600x400/png';
+    payload.image = 'https://placehold.co/385x345/png';
   }
 
   const result = await Recipe.create({ ...payload, createdBy: user?._id });
@@ -184,7 +184,10 @@ const getUserRecipesFromDB = async (id: string, query: Record<string, unknown>) 
 const getRecipeFeedsFromDB = async (query: Record<string, unknown>) => {
   // ge
   // accending the which is big upvoted
-  const baseQuery = Recipe.find().populate('createdBy').populate('category').sort({ upvotes: -1 });
+  const baseQuery = Recipe.find({ status: 'published' })
+    .populate('createdBy')
+    .populate('category')
+    .sort({ upvotes: -1 });
   const recipeQuery = new QueryBuilder(baseQuery, query).filter().sort().paginate().fields();
 
   const result = await recipeQuery.modelQuery;

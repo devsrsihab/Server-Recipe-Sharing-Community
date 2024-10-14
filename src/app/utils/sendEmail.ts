@@ -7,15 +7,32 @@ export const sendMail = async (to: string, html: string) => {
     port: 587,
     secure: config.NODE_ENV === 'production', // Use `true` for port 465, `false` for all other ports
     auth: {
-      user: 'md.srsihabzone@gmail.com',
-      pass: 'unqn eyqd drsb mfzx',
+      user: config.email_user,
+      pass: config.email_pass,
     },
   });
 
-  await transporter.sendMail({
-    from: '"SR Tech" <md.srsihabzone@gmail.com>', // sender address
-    to: `${to}`, // list of receivers
-    subject: 'Reset Password Link', // Subject line
-    html: `Hello Dear user, Your Reset Password Link Expire in 10 minutes, <b>${html}</b>`, // html body
+  // Verify transporter
+  await new Promise((resolve, reject) => {
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log('Server is ready to take our messages');
+        resolve(success);
+      }
+    });
   });
+
+  // Send mail
+  const info = await transporter.sendMail({
+    from: `"SRS Recipe Community" <${config.email_user}>`,
+    to: to,
+    subject: 'Reset Password Link',
+    html: `Hello Dear user, Your Reset Password Link Expire in 10 minutes, <small>${html}</small>`,
+  });
+
+  console.log('Message sent: %s', info.messageId);
+  return info;
 };

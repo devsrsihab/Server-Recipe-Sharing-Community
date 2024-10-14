@@ -19,7 +19,8 @@ export interface TUser {
   followers: string[];
   following: string[];
   isPremium: boolean;
-  premiumExpiry?: Date;
+  membershipStart?: Date;
+  membershipEnd?: Date;
   needPasswordChange: boolean;
   passwordChangedAt?: Date;
   status: string;

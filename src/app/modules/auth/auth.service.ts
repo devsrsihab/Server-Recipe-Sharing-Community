@@ -7,9 +7,9 @@ import config from '../../config';
 import bcrypt from 'bcrypt';
 import { createToken } from './auth.utils';
 import jwt from 'jsonwebtoken';
-import { sendMail } from '../../utils/sendEmail';
 import { TUser } from '../user/user.interface';
 import { generateUsername, generatUserId } from '../user/user.utils';
+import { sendPasswordResetEmail } from '../../utils/sendEmailSendGrid';
 
 // create student
 const registerUserToDB = async (payload: TUser) => {
@@ -58,6 +58,7 @@ const loginUser = async (payload: TLoginUser) => {
     role: user?.role,
     name: user?.name,
     profilePicture: user?.profilePicture,
+    isPremium: user?.isPremium,
   };
 
   const srsRecipeAccessToken = createToken(
@@ -173,6 +174,7 @@ const refreshToken = async (token: string) => {
     role: user?.role,
     name: user?.name,
     profilePicture: user?.profilePicture,
+    isPremium: user?.isPremium,
   };
 
   const srsRecipeAccessToken = createToken(
@@ -215,14 +217,16 @@ const forgetPassword = async (email: string) => {
     role: user?.role,
     name: user?.name,
     profilePicture: user?.profilePicture,
+    isPremium: user?.isPremium,
   };
 
   const srsRecipeAccessToken = createToken(jwtPayload, config.jwt_access_secret as string, '10m');
 
   // reset ui link
-  const resetUILink = `${config.reset_password_ui_link}/?id=${user.email}&token=${srsRecipeAccessToken}`;
+  const resetUILink = `${config.reset_password_ui_link}/?email=${user.email}&token=${srsRecipeAccessToken}`;
 
-  sendMail(user.email, resetUILink);
+  // sendMail(user.email, resetUILink);
+  sendPasswordResetEmail(user.email, resetUILink);
 };
 
 // reset password
@@ -251,7 +255,7 @@ const resetPassword = async (payload: { email: string; newPassword: string }, to
   const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
 
   // check if user id and token id match
-  if (user.id !== decoded.userId) {
+  if (user.email !== decoded.email) {
     throw new AppError(httpStatus.FORBIDDEN, 'You are Forbidden');
   }
 
@@ -262,7 +266,7 @@ const resetPassword = async (payload: { email: string; newPassword: string }, to
   );
 
   const result = User.findOneAndUpdate(
-    { id: decoded.userId, role: decoded.role },
+    { email: decoded.email, role: decoded.role },
     {
       password: newHashedPassword,
       passwordChangedAt: new Date(),

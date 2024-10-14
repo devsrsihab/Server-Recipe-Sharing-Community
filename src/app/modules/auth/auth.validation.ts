@@ -3,7 +3,10 @@ import { z } from 'zod';
 // login validation
 const loginValidatonSchema = z.object({
   body: z.object({
-    email: z.string({ required_error: 'email is required', invalid_type_error: 'email must be string' }),
+    email: z.string({
+      required_error: 'email is required',
+      invalid_type_error: 'email must be string',
+    }),
     password: z.string({
       required_error: 'password is required',
       invalid_type_error: 'password must be string',
@@ -39,7 +42,7 @@ const refreshTokenValidatonSchema = z.object({
 const forgetPasswordValidationSchema = z.object({
   body: z.object({
     email: z.string({
-      required_error: 'User id is required',
+      required_error: 'User Email is required',
     }),
   }),
 });

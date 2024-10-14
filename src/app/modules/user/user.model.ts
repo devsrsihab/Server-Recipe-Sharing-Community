@@ -61,7 +61,10 @@ const userSchema = new Schema<TUser, UserModel>(
       type: Boolean,
       default: false, // Default to non-premium
     },
-    premiumExpiry: {
+    membershipStart: {
+      type: Date,
+    },
+    membershipEnd: {
       type: Date,
     },
     needPasswordChange: {

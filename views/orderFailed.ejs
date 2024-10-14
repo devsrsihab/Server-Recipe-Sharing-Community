@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Failed</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 90%;
+        width: 600px;
+        margin: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+      }
+      svg {
+        max-width: 100%;
+        height: auto;
+      }
+      h1 {
+        color: #dc3545;
+        font-size: 2em;
+        margin-top: 20px;
+      }
+      p {
+        font-size: 1em;
+        color: #333;
+        margin-top: 10px;
+      }
+      .support-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 20px;
+      }
+      a {
+        color: #dc3545;
+        text-decoration: none;
+      }
+      .button {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 15px 30px;
+        background-color: #dc3545;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+      @media (max-width: 480px) {
+        .container {
+          padding: 15px;
+        }
+        h1 {
+          font-size: 1.5em;
+        }
+        p,
+        .support-text {
+          font-size: 0.9em;
+        }
+        .button {
+          padding: 10px 20px;
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100"
+        height="100"
+        fill="#dc3545"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M8 1a7 7 0 1 0 7 7A7 7 0 0 0 8 1zm0 12.93A5.93 5.93 0 1 1 13.93 8 5.937 5.937 0 0 1 8 13.93zM4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 1 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+        />
+      </svg>
+      <h1>Order Failed</h1>
+      <p style="text-transform: capitalize">
+        Hey <%= userFullName %>, We encountered an issue while processing your order.
+      </p>
+      <p class="support-text">
+        Please try again or
+        <a href="mailto:support@example.com">contact support</a>
+        if the problem persists.
+      </p>
+      <a href="<%= homeLink %>" class="button">Return to Homepage</a>
+    </div>
+  </body>
+</html>

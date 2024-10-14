@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { AuthValidation } from './auth.validation';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthControllers } from './auth.controller';
@@ -15,7 +15,6 @@ router.post(
   AuthControllers.registerUser,
 );
 
-
 // login
 router.post(
   '/login',
@@ -31,7 +30,7 @@ router.post(
   AuthControllers.changePassword,
 );
 
-// refresh token 
+// refresh token
 router.post(
   '/refresh-token',
   validateRequest(AuthValidation.refreshTokenValidatonSchema),
@@ -51,6 +50,5 @@ router.post(
   validateRequest(AuthValidation.resetPasswordValidationSchema),
   AuthControllers.resetPassword,
 );
-
 
 export const AuthRoute = router;

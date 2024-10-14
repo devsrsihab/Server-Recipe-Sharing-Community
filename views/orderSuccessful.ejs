@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Success</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 700px;
+        margin: 50px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+      }
+      .success-icon {
+        width: 100px;
+        height: 100px;
+      }
+      h1 {
+        color: #28a745;
+        font-size: 2.5em;
+        margin-top: 20px;
+      }
+      .user-message {
+        font-size: 1.2em;
+        color: #333;
+        margin-top: 10px;
+        text-transform: capitalize;
+      }
+      .info-message {
+        font-size: 1em;
+        color: #666;
+        margin-top: 20px;
+      }
+      .contact-link {
+        color: #28a745;
+        text-decoration: none;
+      }
+      .cta-button {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 15px 30px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+      }
+      @media (max-width: 768px) {
+        .container {
+          margin: 20px auto;
+          padding: 15px;
+        }
+        .success-icon {
+          width: 80px;
+          height: 80px;
+        }
+        h1 {
+          font-size: 2em;
+        }
+        .user-message {
+          font-size: 1.1em;
+        }
+        .info-message {
+          font-size: 0.9em;
+        }
+        .cta-button {
+          padding: 12px 24px;
+          font-size: 1.1em;
+        }
+      }
+      @media (max-width: 480px) {
+        .container {
+          margin: 10px auto;
+          padding: 10px;
+        }
+        .success-icon {
+          width: 60px;
+          height: 60px;
+        }
+        h1 {
+          font-size: 1.8em;
+        }
+        .user-message {
+          font-size: 1em;
+        }
+        .info-message {
+          font-size: 0.8em;
+        }
+        .cta-button {
+          padding: 10px 20px;
+          font-size: 1em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="success-icon"
+        fill="#28a745"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.707 9.707L11.5 4.914l-.707-.707-4.086 4.086L5.5 7.5l-.707.707 2.914 2.914z"
+        />
+      </svg>
+      <h1>Thank You!</h1>
+      <p class="user-message">
+        <strong><%= userFullName %></strong> Your membership has been successfully activated.
+      </p>
+      <p class="info-message">
+        You will receive an email confirmation shortly. If you have any questions, feel free to
+        <a href="mailto:support@example.com" class="contact-link">contact us</a>.
+      </p>
+      <a href="<%= homeLink %>" class="cta-button">Go Home Page</a>
+    </div>
+  </body>
+</html>
